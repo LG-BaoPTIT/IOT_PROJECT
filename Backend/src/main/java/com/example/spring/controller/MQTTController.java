@@ -1,9 +1,12 @@
 package com.example.spring.controller;
 
+import com.example.spring.dto.IOTPayload;
+import com.example.spring.payload.request.LedStatus;
 import com.example.spring.service.MqttPubSupService;
 import org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -13,8 +16,8 @@ public class MQTTController {
     MqttPubSupService mqttPubSupService;
 
     @PostMapping("/publish")
-    public  String publishMessage(){
-        mqttPubSupService.publishMessage();
+    public  String publishMessage(@RequestBody IOTPayload payload){
+        mqttPubSupService.publishMessage(payload);
         return "message published successfully";
     }
 }
