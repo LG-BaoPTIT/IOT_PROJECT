@@ -34,7 +34,9 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/auth/**").permitAll()
-						.requestMatchers("/api/v1/test/**").permitAll().anyRequest().authenticated())
+						.requestMatchers("/api/v1/test/**").permitAll()
+						.requestMatchers("/publish").permitAll()
+						.anyRequest().authenticated())
 				.logout(logout -> logout
 						.logoutUrl("/logout") // Đường dẫn đăng xuất
 						.logoutSuccessUrl("/login") // Đường dẫn sau khi đăng xuất thành công
