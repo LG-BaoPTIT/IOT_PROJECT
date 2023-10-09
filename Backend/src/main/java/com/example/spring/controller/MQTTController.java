@@ -1,10 +1,8 @@
 package com.example.spring.controller;
 
-import com.example.spring.dto.IOTPayload;
-import com.example.spring.encrypt.AES;
 import com.example.spring.payload.request.LedStatus;
-import com.example.spring.service.MqttPubSupService;
-import org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish;
+import com.example.spring.service.MQTTService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,16 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class MQTTController {
+    @Autowired
+    MQTTService mqttService;
 
     @Autowired
-    PasswordEncoder encoder;
-    @Autowired
-    MqttPubSupService mqttPubSupService;
-    @Value("${aes.key.secret}")
-    private String aesKeySecret;
+    ObjectMapper objectMapper;
+
     @PostMapping("/publish")
-    public  String publishMessage(@RequestBody IOTPayload payload){
-        mqttPubSupService.publishMessage(payload);
-        return "message published successfully";
+    public String publishMessage(@RequestBody LedStatus ledStatus) {
+        try {
+            String topic = "/mytopic";
+            String payload = objectMapper.writeValueAsString(ledStatus);
+            mqttService.sendMessage(topic, payload);
+            return "Message published successfully";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error publishing message: " + e.getMessage();
+        }
     }
 }
