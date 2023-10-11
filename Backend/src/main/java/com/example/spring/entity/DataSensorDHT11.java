@@ -9,16 +9,17 @@ import lombok.Setter;
 import java.util.Date;
 
 @Entity
-@Table(name = "LightLogs")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LightLog {
+@Table(name = "DataSensorDHT11")
+public class DataSensorDHT11 {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "logId")
-    private Long logId;
+    @Column(name = "id")
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "moduleId", referencedColumnName = "moduleId")
@@ -27,10 +28,9 @@ public class LightLog {
     @Column(name = "timestamp", nullable = false)
     private Date timestamp;
 
-    @Column(name = "status", nullable = false)
-    private String status; // Trạng thái (Bật/Tắt) -> (1/0)
+    @Column(name = "humidity")
+    private double humidity;
 
-
-
-
+    @Column(name = "temperature")
+    private  double temperature;
 }
