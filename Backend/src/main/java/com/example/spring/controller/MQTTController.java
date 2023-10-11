@@ -21,9 +21,22 @@ public class MQTTController {
     @PostMapping("/publish")
     public String publishMessage(@RequestBody LedStatus ledStatus) {
         try {
-            String topic = "/mytopic";
+            String topic = "led_state";
             String payload = objectMapper.writeValueAsString(ledStatus);
-            mqttService.sendMessage(topic, payload);
+            mqttService.sendMessage(topic, "1");
+            return "Message published successfully";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error publishing message: " + e.getMessage();
+        }
+    }
+
+    @PostMapping("/status_led")
+    public String publishMessageStatusLed(@RequestBody LedStatus ledStatus) {
+        try {
+            String topic = "led_state";
+            String payload = objectMapper.writeValueAsString(ledStatus);
+            mqttService.sendMessage(topic, ledStatus.getLedStatus());
             return "Message published successfully";
         } catch (Exception e) {
             e.printStackTrace();
