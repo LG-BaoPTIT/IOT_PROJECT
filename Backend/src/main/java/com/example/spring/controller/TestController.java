@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/test")
+//@RequestMapping("/api/v1/test")
+@RequestMapping("/")
 public class TestController {
 	@GetMapping("/all")
 	public String allAccess() {
@@ -24,4 +25,12 @@ public class TestController {
 	public String adminAccess() {
 		return "Admin Content";
 	}
+
+
+	@GetMapping("")
+	public String show() {
+
+		return "index.html";
+	}
+
 }

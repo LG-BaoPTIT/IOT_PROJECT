@@ -1,5 +1,6 @@
 package com.example.spring.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.security.config.annotation.web.socket.AbstractSecurityWebSocketMessageBrokerConfigurer;
@@ -23,4 +24,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws");
     }
 
+    @Bean
+    public WebSocketEventListener webSocketEventListener() {
+        return new WebSocketEventListener();
+    }
 }
