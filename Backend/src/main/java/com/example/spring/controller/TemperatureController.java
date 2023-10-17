@@ -18,12 +18,12 @@ public class TemperatureController {
 //        realTimeDataService.sendRealTimeData();
 //    }
 
-    @MessageMapping("/hello")
-    //@SendTo("/topic/greetings")
-    public void greeting(HelloMessage message) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        realTimeDataService.sendRealTimeData();
-        //return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
-    }
+//    @MessageMapping("/hello")
+//    //@SendTo("/topic/greetings")
+//    public void greeting(HelloMessage message) throws Exception {
+//        Thread.sleep(1000); // simulated delay
+//        realTimeDataService.sendRealTimeData();
+//        //return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
+//    }
 
 }

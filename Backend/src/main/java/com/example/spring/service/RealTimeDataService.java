@@ -15,7 +15,8 @@ public class RealTimeDataService {
     private WebSocketEventListener webSocketEventListener;
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
-    @Scheduled(fixedRate = 1000)
+
+   // @Scheduled(fixedRate = 1000)
     public void sendRealTimeData() throws InterruptedException {
         double data = Math.random();
 //        for (int i=0;i<=100;i++){

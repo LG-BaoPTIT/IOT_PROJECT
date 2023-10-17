@@ -1,8 +1,11 @@
 package com.example.spring.config;
 
+import com.example.spring.payload.response.Greeting;
+import com.example.spring.service.RealTimeDataService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +25,8 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.util.HtmlUtils;
 
 
 @Configuration
@@ -36,8 +41,11 @@ public class MQTTConfig {
     private String password;
 
 
+    @Autowired
+    private RealTimeDataService realTimeDataService;
 
-
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
     @Bean
     public MqttPahoClientFactory mqttClientFactory() {
 
@@ -87,6 +95,8 @@ public class MQTTConfig {
 //                        dataSensorRepository.save(dataSensorConverter.toEntity(dataSensorDTO));
                     //                    sseService.sendToAll(payload);
 //                    chartSSEService.sendToAll();
+                   Greeting a = new Greeting(message.getPayload() + HtmlUtils.htmlEscape("t") + "!");
+                    messagingTemplate.convertAndSend("/topic/greetings", a);
                     System.out.println(message.getPayload());
                 }
             }
