@@ -95,8 +95,15 @@ public class MQTTConfig {
 //                        dataSensorRepository.save(dataSensorConverter.toEntity(dataSensorDTO));
                     //                    sseService.sendToAll(payload);
 //                    chartSSEService.sendToAll();
-                   Greeting a = new Greeting(message.getPayload() + HtmlUtils.htmlEscape("t") + "!");
+                    Greeting a = new Greeting(message.getPayload() + HtmlUtils.htmlEscape("t") + "!");
                     messagingTemplate.convertAndSend("/topic/greetings", a);
+                    System.out.println(message.getPayload());
+                }
+                if(topic.equals("led_state")) {
+                    System.out.println("led_state:"+message.getPayload());
+
+                }
+                if(topic.equals("gas_data")) {
                     System.out.println(message.getPayload());
                 }
             }
