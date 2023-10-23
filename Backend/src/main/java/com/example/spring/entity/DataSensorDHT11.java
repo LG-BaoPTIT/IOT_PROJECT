@@ -22,8 +22,8 @@ public class DataSensorDHT11 {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "moduleId", referencedColumnName = "moduleId")
-    private Module module;
+    @JoinColumn(name = "deviceId", referencedColumnName = "deviceId", insertable = false, updatable = false)
+    private Device device;
 
     @Column(name = "timestamp", nullable = false)
     private Date timestamp;
@@ -33,4 +33,8 @@ public class DataSensorDHT11 {
 
     @Column(name = "temperature")
     private  double temperature;
+
+    @Column(name = "deviceId")
+    private String deviceId; // Trường này ánh xạ đến deviceId
+
 }

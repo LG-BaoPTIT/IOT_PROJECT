@@ -17,12 +17,12 @@ import java.util.Date;
 public class LightLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "logId")
-    private Long logId;
+    @Column(name = "id")
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "moduleId", referencedColumnName = "moduleId")
-    private Module module;
+    @JoinColumn(name = "deviceId", referencedColumnName = "deviceId")
+    private Device device;
 
     @Column(name = "timestamp", nullable = false)
     private Date timestamp;

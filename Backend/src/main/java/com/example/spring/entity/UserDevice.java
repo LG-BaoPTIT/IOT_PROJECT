@@ -3,8 +3,8 @@ package com.example.spring.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "UserModules")
-public class UserModule {
+@Table(name = "UserDevice")
+public class UserDevice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -15,6 +15,6 @@ public class UserModule {
     private Users user;
 
     @ManyToOne
-    @JoinColumn(name = "moduleId", referencedColumnName = "moduleId")
-    private Module module;
+    @JoinColumn(name = "deviceId", referencedColumnName = "deviceId")
+    private Device device;
 }

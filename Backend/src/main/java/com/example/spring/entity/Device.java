@@ -7,20 +7,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Modules")
+@Table(name = "Devices")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Module {
+public class Device {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "moduleId")
-    private Long moduleId;
-
-    @Column(name = "moduleName", nullable = false)
-    private String moduleName;
+    @Column(name = "deviceId")
+    private String deviceId;
 
     @Column(name = "moduleType", nullable = false)
     private String moduleType;

@@ -1,7 +1,10 @@
 package com.example.spring.config;
 
+import com.example.spring.entity.DataSensorDHT11;
 import com.example.spring.payload.response.Greeting;
+import com.example.spring.service.DataSensorDHT11Service;
 import com.example.spring.service.RealTimeDataService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -28,6 +31,9 @@ import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.util.HtmlUtils;
 
+import javax.xml.crypto.Data;
+import java.util.Date;
+
 
 @Configuration
 public class MQTTConfig {
@@ -46,6 +52,11 @@ public class MQTTConfig {
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    ObjectMapper mapper;
+    @Autowired
+    DataSensorDHT11Service dht11Service;
     @Bean
     public MqttPahoClientFactory mqttClientFactory() {
 
@@ -88,16 +99,20 @@ public class MQTTConfig {
             @Override
             public void handleMessage(Message<?> message) throws MessagingExceptionWrapper {
                 String topic = message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC).toString();
-                if(topic.equals("esp8266_data")) {
+                if(topic.equals("DHT11_data")) {
                     String payload = message.getPayload().toString();
-                    //                        ObjectMapper objectMapper = new ObjectMapper();
-//                        DataSensorDTO dataSensorDTO = objectMapper.readValue(payload, DataSensorDTO.class);
-//                        dataSensorRepository.save(dataSensorConverter.toEntity(dataSensorDTO));
-                    //                    sseService.sendToAll(payload);
-//                    chartSSEService.sendToAll();
-                    Greeting a = new Greeting(message.getPayload() + HtmlUtils.htmlEscape("t") + "!");
-                    messagingTemplate.convertAndSend("/topic/greetings", a);
-                    System.out.println(message.getPayload());
+                    try {
+                        DataSensorDHT11 data = mapper.readValue(payload, DataSensorDHT11.class);
+                        data.setTimestamp(new Date());
+                        dht11Service.save(data);
+
+                        Greeting a = new Greeting(message.getPayload() + HtmlUtils.htmlEscape("t") + "!");
+                        messagingTemplate.convertAndSend("/topic/greetings", a);
+                        System.out.println(message.getPayload());
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
+
                 }
                 if(topic.equals("led_state")) {
                     System.out.println("led_state:"+message.getPayload());
