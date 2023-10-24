@@ -20,6 +20,12 @@ public class LightLog {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "lightId")
+    private String lightId;
+
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "deviceId", referencedColumnName = "deviceId")
     private Device device;

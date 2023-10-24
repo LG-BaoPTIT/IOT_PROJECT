@@ -37,4 +37,7 @@ public class DHT11Sensor {
     @Column(name = "deviceId")
     private String deviceId; // Trường này ánh xạ đến deviceId
 
+    @Column(name = "description")
+    private String description;
+
 }
