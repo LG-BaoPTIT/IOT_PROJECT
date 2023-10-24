@@ -35,4 +35,7 @@ public class GasSensor {
 
     @Column(name = "deviceId")
     private String deviceId;
+
+    @Column(name = "description")
+    private String description;
 }
