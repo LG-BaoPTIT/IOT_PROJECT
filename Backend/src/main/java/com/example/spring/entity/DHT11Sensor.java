@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "DataSensorDHT11")
-public class DataSensorDHT11 {
+public class DHT11Sensor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

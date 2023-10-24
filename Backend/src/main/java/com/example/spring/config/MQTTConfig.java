@@ -1,12 +1,11 @@
 package com.example.spring.config;
 
-import com.example.spring.entity.DataSensorDHT11;
+import com.example.spring.entity.DHT11Sensor;
 import com.example.spring.payload.response.Greeting;
-import com.example.spring.service.DataSensorDHT11Service;
+import com.example.spring.service.SensorDHT11SensorService;
 import com.example.spring.service.RealTimeDataService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,9 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.core.MessageProducer;
-import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.IntegrationFlows;
-import org.springframework.integration.handler.GenericHandler;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
@@ -29,9 +25,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.util.HtmlUtils;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 
 
@@ -56,7 +50,7 @@ public class MQTTConfig {
     @Autowired
     ObjectMapper mapper;
     @Autowired
-    DataSensorDHT11Service dht11Service;
+    SensorDHT11SensorService dht11Service;
     @Bean
     public MqttPahoClientFactory mqttClientFactory() {
 
@@ -102,12 +96,13 @@ public class MQTTConfig {
                 if(topic.equals("DHT11_data")) {
                     String payload = message.getPayload().toString();
                     try {
-                        DataSensorDHT11 data = mapper.readValue(payload, DataSensorDHT11.class);
+                        DHT11Sensor data = mapper.readValue(payload, DHT11Sensor.class);
                         data.setTimestamp(new Date());
                         dht11Service.save(data);
 
-                        Greeting a = new Greeting(message.getPayload() + HtmlUtils.htmlEscape("t") + "!");
-                        messagingTemplate.convertAndSend("/topic/greetings", a);
+                        Greeting a = new Greeting(message.getPayload() + "");
+
+                        messagingTemplate.convertAndSend("/topic/DHT11_data", data);
                         System.out.println(message.getPayload());
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
@@ -119,6 +114,7 @@ public class MQTTConfig {
 
                 }
                 if(topic.equals("gas_data")) {
+
                     System.out.println(message.getPayload());
                 }
             }
