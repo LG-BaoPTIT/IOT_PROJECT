@@ -36,7 +36,7 @@ public class MQTTController {
         try {
             String topic = "led_state";
             String payload = objectMapper.writeValueAsString(ledStatus);
-            mqttService.sendMessage(topic, ledStatus.getLedStatus());
+            mqttService.sendMessage(topic, ledStatus.getStatus());
             return "Message published successfully";
         } catch (Exception e) {
             e.printStackTrace();
