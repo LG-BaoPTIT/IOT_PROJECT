@@ -23,20 +23,17 @@ public class LightLog {
     @Column(name = "lightId")
     private String lightId;
 
-    @Column(name = "description")
-    private String description;
-
     @ManyToOne
-    @JoinColumn(name = "deviceId", referencedColumnName = "deviceId")
+    @JoinColumn(name = "deviceId", referencedColumnName = "deviceId", insertable = false, updatable = false)
     private Device device;
+
+    @Column(name = "deviceId")
+    private String deviceId;
 
     @Column(name = "timestamp", nullable = false)
     private Date timestamp;
 
     @Column(name = "status", nullable = false)
     private String status; // Trạng thái (Bật/Tắt) -> (1/0)
-
-
-
 
 }
