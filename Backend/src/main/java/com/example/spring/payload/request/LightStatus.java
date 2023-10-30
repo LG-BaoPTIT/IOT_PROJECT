@@ -5,10 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LedStatus {
-    private String ledStatus;
+public class LightStatus {
+
+    private String lightId;
+
+    private String deviceId;
+
+    private Date timestamp;
+
+    private String status; // Trạng thái (Bật/Tắt) -> (1/0)
 }
