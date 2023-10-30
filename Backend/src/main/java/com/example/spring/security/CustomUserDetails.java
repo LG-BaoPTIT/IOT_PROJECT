@@ -25,6 +25,7 @@ public class CustomUserDetails implements UserDetails{
 	private String email;
 	private String phone;
 	private boolean userStatus;
+	private String deviceId;
 	
 	private Collection<? extends GrantedAuthority> authorities;
 	
@@ -40,6 +41,7 @@ public class CustomUserDetails implements UserDetails{
 				user.getEmail(),
 				user.getPhone(),
 				user.isUserStatus(),
+				user.getDeviceId(),
 				listAuthorities
 				);
 		

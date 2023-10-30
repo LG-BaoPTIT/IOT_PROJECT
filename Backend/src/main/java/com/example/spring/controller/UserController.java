@@ -104,7 +104,7 @@ public class UserController {
 			String jwt = tokenProvider.generateToken(customUserDetails);
 			List<String> listRoles = customUserDetails.getAuthorities().stream()
 					.map(item -> item.getAuthority()).collect(Collectors.toList());
-			return ResponseEntity.ok(new JwtResponse(jwt, customUserDetails.getUsername(), customUserDetails.getEmail(), customUserDetails.getPhone(), listRoles));
+			return ResponseEntity.ok(new JwtResponse(jwt, customUserDetails.getUsername(), customUserDetails.getEmail(), customUserDetails.getPhone(), listRoles, customUserDetails.getDeviceId()));
 		} catch (AuthenticationException e) {
 			// Xử lý khi xác thực thất bại (mật khẩu không đúng)
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sai tên đăng nhập hoặc mật khẩu.");

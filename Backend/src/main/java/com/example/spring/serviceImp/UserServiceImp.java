@@ -35,7 +35,11 @@ public class UserServiceImp implements UserService {
 		// TODO Auto-generated method stub
 		return userRepository.save(user);
 	}
-	
-	
-	
+
+	@Override
+	public String getDeviceIdByUserName(String userName) {
+		return userRepository.getDeviceIdByUserName(userName);
+	}
+
+
 }
