@@ -17,13 +17,15 @@ public class JwtResponse {
 	private String userName;
 	private String email;
 	private String phone;
+	private String deviceId;
 	private List<String>  listRoles;
 
-	public JwtResponse(String token, String userName, String email, String phone, List<String> listRoles) {
+	public JwtResponse(String token, String userName, String email, String phone, List<String> listRoles,String deviceId) {
 		this.token = token;
 		this.userName = userName;
 		this.email = email;
 		this.phone = phone;
 		this.listRoles = listRoles;
+		this.deviceId = deviceId;
 	}
 }
