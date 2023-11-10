@@ -35,8 +35,8 @@ public class SecurityConfig {
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/auth/**").permitAll()
 						.requestMatchers("/api/v1/test/**").permitAll()
-						.requestMatchers("/**").permitAll()
-						.anyRequest().permitAll())
+						.requestMatchers("/changeLightStatus").permitAll()
+						.anyRequest().authenticated())
 				.logout(logout -> logout
 						.logoutUrl("/logout") // Đường dẫn đăng xuất
 						.logoutSuccessUrl("/login") // Đường dẫn sau khi đăng xuất thành công
