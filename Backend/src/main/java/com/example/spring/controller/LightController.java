@@ -41,14 +41,13 @@ public class LightController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName(); // Lấy tên người dùng
+        String userName = authentication.getName();
 
         System.out.println("Người dùng " + userName + " gửi yêu cầu đến URI /changeLightStatus" );
-        LightLog lightLog = new LightLog();
-        lightLog = new LightLog();
-        lightLog.setDeviceId(lightStatus.getDeviceId());
-        lightLog.setStatus(lightStatus.getStatus());
+        LightLog lightLog =new LightLog();
         lightLog.setLightId(lightStatus.getLightId());
+        lightLog.setTimestamp(new Date());
+        lightLog.setStatus(lightStatus.getStatus());
         String topic =userService.getDeviceIdByUserName(userName) + "/" + lightStatus.getLightId() + "/" + "light_state";
         mqttService.sendMessage(topic,lightStatus.getStatus());
         lightLog.setTimestamp(new Date());
