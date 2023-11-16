@@ -99,9 +99,6 @@ public class MQTTConfig {
                         DHT11Sensor data = mapper.readValue(payload, DHT11Sensor.class);
                         data.setTimestamp(new Date());
                         dht11Service.save(data);
-
-                        Greeting a = new Greeting(message.getPayload() + "");
-
                         messagingTemplate.convertAndSend("/topic/DHT11_data", data);
                         System.out.println(message.getPayload());
                     } catch (JsonProcessingException e) {

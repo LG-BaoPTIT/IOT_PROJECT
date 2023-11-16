@@ -9,28 +9,29 @@ import lombok.Setter;
 import java.util.Date;
 
 @Entity
-@Table(name = "LightLogs")
+@Table(name = "DoorLog")
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class LightLog {
+public class DoorLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LogId")
     private Long logId;
 
     @ManyToOne
-    @JoinColumn(name = "lightId", referencedColumnName = "lightId", insertable = false, updatable = false)
-    private Light light;
+    @JoinColumn(name = "doorId", referencedColumnName = "doorId", insertable = false, updatable = false)
+    private Door door;
 
-    @Column(name = "lightId")
-    private String lightId;
+    @Column(name = "doorId")
+    private String doorId;
 
-    @Column(name = "timestamp", nullable = false)
+    @Column(name = "timestamp")
     private Date timestamp;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private String status;
+
 
 }
