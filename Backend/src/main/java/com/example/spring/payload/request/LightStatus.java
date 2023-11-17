@@ -17,7 +17,5 @@ public class LightStatus {
 
     private String deviceId;
 
-    private Date timestamp;
-
     private String status; // Trạng thái (Bật/Tắt) -> (1/0)
 }

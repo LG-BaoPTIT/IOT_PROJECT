@@ -50,6 +50,7 @@ public class LightController {
         lightLog.setStatus(lightStatus.getStatus());
         String topic =userService.getDeviceIdByUserName(userName) + "/" + lightStatus.getLightId() + "/" + "light_state";
         mqttService.sendMessage(topic,lightStatus.getStatus());
+        System.out.println(topic);
         lightLog.setTimestamp(new Date());
         lightService.save(lightLog);
         return ResponseEntity.status(HttpStatus.OK).body("on/off light successfully.");
