@@ -36,6 +36,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/auth/**").permitAll()
 						.requestMatchers("/api/v1/test/**").permitAll()
 						.requestMatchers("/changeLightStatus").permitAll()
+						.requestMatchers("/**").permitAll()
 						.anyRequest().authenticated())
 				.logout(logout -> logout
 						.logoutUrl("/logout") // Đường dẫn đăng xuất

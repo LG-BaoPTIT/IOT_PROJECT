@@ -1,8 +1,7 @@
 package com.example.spring.config;
 
-import com.example.spring.entity.DHT11Sensor;
-import com.example.spring.payload.response.Greeting;
-import com.example.spring.service.SensorDHT11SensorService;
+import com.example.spring.entity.DHTSensorLog;
+import com.example.spring.service.DHT11SensorService;
 import com.example.spring.service.RealTimeDataService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +26,7 @@ import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.Date;
+import java.util.Objects;
 
 
 @Configuration
@@ -50,7 +50,7 @@ public class MQTTConfig {
     @Autowired
     ObjectMapper mapper;
     @Autowired
-    SensorDHT11SensorService dht11Service;
+    DHT11SensorService dht11Service;
     @Bean
     public MqttPahoClientFactory mqttClientFactory() {
 
@@ -92,15 +92,16 @@ public class MQTTConfig {
         return new MessageHandler() {
             @Override
             public void handleMessage(Message<?> message) throws MessagingExceptionWrapper {
-                String topic = message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC).toString();
+                String topic = Objects.requireNonNull(message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC)).toString();
                 if(topic.equals("DHT11_data")) {
                     String payload = message.getPayload().toString();
+                    System.out.println(payload);
                     try {
-                        DHT11Sensor data = mapper.readValue(payload, DHT11Sensor.class);
+                        DHTSensorLog data = mapper.readValue(payload, DHTSensorLog.class);
                         data.setTimestamp(new Date());
+                       // data.setDhtId("DHT11_S");
                         dht11Service.save(data);
-                        messagingTemplate.convertAndSend("/topic/DHT11_data", data);
-                        System.out.println(message.getPayload());
+                        //messagingTemplate.convertAndSend("/topic/DHT11_data", data);
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
                     }
@@ -112,7 +113,7 @@ public class MQTTConfig {
                 }
                 if(topic.equals("gas_data")) {
 
-                    System.out.println(message.getPayload());
+                    //System.out.println(message.getPayload());
                 }
             }
         };

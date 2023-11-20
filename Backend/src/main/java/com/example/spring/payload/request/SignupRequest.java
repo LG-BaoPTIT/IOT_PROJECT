@@ -19,7 +19,7 @@ public class SignupRequest {
 	private String passWord;
 	private String email;
 	private String phone;
-	private String deviceId;
+	private String HomeId;
 	private boolean userStatus = true;
 	private Set<String> listRole;
 	

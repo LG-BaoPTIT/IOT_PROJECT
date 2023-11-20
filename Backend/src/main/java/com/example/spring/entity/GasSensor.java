@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
-@Table(name = "DataSensorGas")
+@Table(name = "GasSensor")
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,26 +14,17 @@ import java.util.Date;
 @Setter
 public class GasSensor {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    @Column(name = "GasSensorId")
+    private String GasSensorId;
 
     @ManyToOne
-    @JoinColumn(name = "deviceId", referencedColumnName = "deviceId", insertable = false, updatable = false)
-    private Device device;
+    @JoinColumn(name = "HomeId", referencedColumnName = "HomeId", insertable = false, updatable = false)
+    private Homes homes;
 
-    @Column(name = "timestamp", nullable = false)
-    private Date timestamp;
-
-    @Column(name = "value")
-    private long value;
-
-    @Column(name = "gasStatus")
-    private int gasStatus;//0/1 => (khong phat hien khi gas/co phat hien khi gas)
-
-    @Column(name = "deviceId")
-    private String deviceId;
+    @Column(name = "HomeId")
+    private String HomeId;
 
     @Column(name = "description")
     private String description;
+
 }
