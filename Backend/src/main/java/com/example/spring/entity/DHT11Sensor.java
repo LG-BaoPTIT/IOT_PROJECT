@@ -6,36 +6,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "DataSensorDHT11")
+@Table(name = "SensorDHT11")
 public class DHT11Sensor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    @Column(name = "DhtId")
+    private String DHTid;
 
     @ManyToOne
-    @JoinColumn(name = "deviceId", referencedColumnName = "deviceId", insertable = false, updatable = false)
-    private Device device;
+    @JoinColumn(name = "HomeId", referencedColumnName = "HomeId", insertable = false, updatable = false)
+    private Homes homes;
 
-    @Column(name = "timestamp", nullable = false)
-    private Date timestamp;
-
-    @Column(name = "humidity")
-    private double humidity;
-
-    @Column(name = "temperature")
-    private  double temperature;
-
-    @Column(name = "deviceId")
-    private String deviceId; // Trường này ánh xạ đến deviceId
+    @Column(name = "HomeId")
+    private String HomeId; // Trường này ánh xạ đến deviceId
 
     @Column(name = "description")
     private String description;

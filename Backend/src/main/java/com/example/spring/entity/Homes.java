@@ -7,16 +7,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Devices")
+@Table(name = "Homes")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Device {
+public class Homes {
 
     @Id
-    @Column(name = "deviceId")
-    private String deviceId;
+    @Column(name = "HomeId")
+    private String HomeId;
 
     @Column(name = "moduleType", nullable = false)
     private String moduleType;

@@ -1,11 +1,9 @@
 package com.example.spring.entity;
 
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -42,9 +40,9 @@ public class Users {
 	private Set<Roles> listRole = new HashSet<>();
 
 	@ManyToOne
-	@JoinColumn(name = "deviceId", referencedColumnName = "deviceId", insertable = false, updatable = false)
-	private Device device;
+	@JoinColumn(name = "HomeId", referencedColumnName = "HomeId", insertable = false, updatable = false)
+	private Homes homes;
 
-	@Column(name = "deviceId")
-	private String deviceId; // Trường này ánh xạ đến deviceId
+	@Column(name = "HomeId")
+	private String HomeId; // Trường này ánh xạ đến deviceId
 }

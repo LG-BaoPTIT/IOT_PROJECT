@@ -67,7 +67,7 @@ public class UserController {
 		user.setPassWord(encoder.encode(signupRequest.getPassWord()));
 		user.setEmail(signupRequest.getEmail());
 		user.setPhone(signupRequest.getPhone());
-		user.setDeviceId(signupRequest.getDeviceId());
+		user.setHomeId(signupRequest.getHomeId());
 		user.setUserStatus(true);
 		Set<String> strRole = signupRequest.getListRole();
 		Set<Roles> listRoles = new HashSet<>();

@@ -18,11 +18,11 @@ public class Door {
     private String doorId;
 
     @ManyToOne
-    @JoinColumn(name = "deviceId", referencedColumnName = "deviceId", insertable = false, updatable = false)
-    private Device device;
+    @JoinColumn(name = "HomeId", referencedColumnName = "HomeId", insertable = false, updatable = false)
+    private Homes homes;
 
-    @Column(name = "deviceId")
-    private String deviceId;
+    @Column(name = "HomeId")
+    private String HomeId;
 
     @Column(name = "description")
     private String description;
