@@ -25,7 +25,7 @@ public class DoorLog {
     private Door door;
 
     @Column(name = "doorId")
-    private String doorId;
+    private String door_id;
 
     @Column(name = "timestamp")
     private Date timestamp;

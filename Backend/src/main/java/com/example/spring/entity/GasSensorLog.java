@@ -26,7 +26,7 @@ public class GasSensorLog {
     private GasSensor gasSensor;
 
     @Column(name = "GasSensorId")
-    private String GasSensorId;
+    private String gas_sensor_id;
 
     @Column(name = "timestamp", nullable = false)
     private Date timestamp;
@@ -35,5 +35,5 @@ public class GasSensorLog {
     private long value;
 
     @Column(name = "gasStatus")
-    private int gasStatus;//0/1 => (khong phat hien khi gas/co phat hien khi gas)
+    private String gasStatus;//0/1 => (khong phat hien khi gas/co phat hien khi gas)
 }

@@ -1,11 +1,18 @@
 package com.example.spring.config;
 
+import com.example.spring.dto.DhtDataDTO;
+import com.example.spring.dto.DoorDataDTO;
+import com.example.spring.dto.GasSensorDTO;
+import com.example.spring.dto.LightDTO;
 import com.example.spring.entity.DHTSensorLog;
-import com.example.spring.service.DHT11SensorService;
-import com.example.spring.service.RealTimeDataService;
+import com.example.spring.entity.DoorLog;
+import com.example.spring.entity.GasSensorLog;
+import com.example.spring.entity.LightLog;
+import com.example.spring.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -48,9 +55,23 @@ public class MQTTConfig {
     private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    ObjectMapper mapper;
+    private WebSocketEventListener webSocketEventListener;
+
     @Autowired
-    DHT11SensorService dht11Service;
+    private ObjectMapper mapper;
+
+    @Autowired
+    private DHT11SensorService dht11Service;
+
+    @Autowired
+    private LightService lightService;
+
+    @Autowired
+    private GasSensorService gasSensorService;
+
+    @Autowired
+    private DoorService doorService;
+
     @Bean
     public MqttPahoClientFactory mqttClientFactory() {
 
@@ -93,27 +114,68 @@ public class MQTTConfig {
             @Override
             public void handleMessage(Message<?> message) throws MessagingExceptionWrapper {
                 String topic = Objects.requireNonNull(message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC)).toString();
+                ModelMapper modelMapper = new ModelMapper();
                 if(topic.equals("DHT11_data")) {
                     String payload = message.getPayload().toString();
-                    System.out.println(payload);
+                    //System.out.println(payload);
                     try {
-                        DHTSensorLog data = mapper.readValue(payload, DHTSensorLog.class);
-                        data.setTimestamp(new Date());
-                       // data.setDhtId("DHT11_S");
-                        dht11Service.save(data);
-                        //messagingTemplate.convertAndSend("/topic/DHT11_data", data);
+                        DhtDataDTO dhtDataDTO = mapper.readValue(payload, DhtDataDTO.class);
+                        DHTSensorLog dhtSensorLog = modelMapper.map(dhtDataDTO, DHTSensorLog.class);
+                        dhtSensorLog.setTimestamp(new Date());
+                        dht11Service.save(dhtSensorLog);
+                        String sensorTopic = "/topic/DHT11_data/" + dhtDataDTO.getHome_id();
+                        messagingTemplate.convertAndSend(sensorTopic, dhtDataDTO);
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
                     }
 
                 }
                 if(topic.equals("led_state")) {
-                    System.out.println("led_state:123123132"+message.getPayload());
+                    String payload = message.getPayload().toString();
+                    try {
+                        LightDTO lightDTO = mapper.readValue(payload, LightDTO.class);
+                        LightLog lightLog = modelMapper.map(lightDTO, LightLog.class);
+                        lightLog.setTimestamp(new Date());
+                        lightService.save(lightLog);
+                        String sensorTopic = "/topic/light_data/" + lightDTO.getHome_id();
+                        messagingTemplate.convertAndSend(sensorTopic, lightDTO);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
+                   // System.out.println("led_state:123123132"+message.getPayload());
 
                 }
                 if(topic.equals("gas_data")) {
+                    String payload = message.getPayload().toString();
+                    try {
+                        GasSensorDTO gasSensorDTO = mapper.readValue(payload, GasSensorDTO.class);
+                        gasSensorDTO.setTimestamp(new Date());
+                        GasSensorLog gasSensorLog = modelMapper.map(gasSensorDTO,GasSensorLog.class);
+                        if(gasSensorLog.getGasStatus().equals("1")){
+                            gasSensorService.save(gasSensorLog);
 
-                    //System.out.println(message.getPayload());
+                        }
+                        String sensorTopic = "/topic/gas_data/" + gasSensorDTO.getHome_id();
+                        messagingTemplate.convertAndSend(sensorTopic, gasSensorDTO);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                if(topic.equals("door_data")){
+                    String payload = message.getPayload().toString();
+                    try {
+                        DoorDataDTO doorDataDTO = mapper.readValue(payload, DoorDataDTO.class);
+                        doorDataDTO.setTimestamp(new Date());
+                        DoorLog doorLog = modelMapper.map(doorDataDTO, DoorLog.class);
+                        doorService.save(doorLog);
+                        System.out.println(payload);
+                        System.out.println(doorDataDTO.getHome_id());
+
+                        String sensorTopic = "/topic/door_data/" + doorDataDTO.getHome_id();
+                        messagingTemplate.convertAndSend(sensorTopic, doorDataDTO);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         };
@@ -132,4 +194,5 @@ public class MQTTConfig {
         messageHandler.setDefaultRetained(false);
         return messageHandler;
     }
+
 }
