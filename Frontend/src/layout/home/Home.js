@@ -178,13 +178,13 @@ function Home() {
             </div>
             <div className={cx('container_app-header')}>
                 <div className={cx('row')}>
-                    <div className={cx('col-3')}>
+                    <div className={cx('col-4')}>
                         <Temperature temp = {dataSensor ? dataSensor.temperature : ''}/>
                     </div>
-                    <div className={cx('col-3')}>
+                    <div className={cx('col-4')}>
                         <Humidity humidity = {dataSensor ? dataSensor.humidity : ''}/>
                     </div>
-                    <div className={cx('col-3')}>
+                    <div className={cx('col-4')}>
                         <DustLevel dustLevel = {dustLevel}/>
                     </div>
                 </div>
