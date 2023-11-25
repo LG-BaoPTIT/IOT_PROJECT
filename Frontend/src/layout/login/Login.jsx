@@ -15,6 +15,7 @@ const Login = ({ setUser }) => {
         console.log(res)
         if(res.status === 200) {
           setErrMsg('')
+          localStorage.setItem('home_id', res.data.deviceId)
           setHeader(res.data.token)
           setUser(true)
         } else {
