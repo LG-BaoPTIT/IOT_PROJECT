@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.example.spring.entity.Users;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<Users, Integer>{
 	
@@ -16,4 +18,7 @@ public interface UserRepository extends JpaRepository<Users, Integer>{
 	boolean existsByEmail(String email);
 	@Query(value = "SELECT home_id FROM users WHERE user_name = :userName", nativeQuery = true)
 	String getDeviceIdByUserName(@Param("userName") String userName);
+
+	@Query(value = "SELECT email FROM users WHERE home_id = :homeId",nativeQuery = true)
+	List<String> getEmailByHomeId(@Param("homeId") String homeId);
 }

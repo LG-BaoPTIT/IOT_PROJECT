@@ -7,6 +7,8 @@ import com.example.spring.entity.Users;
 import com.example.spring.repository.UserRepository;
 import com.example.spring.service.UserService;
 
+import java.util.List;
+
 @Service
 public class UserServiceImp implements UserService {
 	@Autowired
@@ -39,6 +41,11 @@ public class UserServiceImp implements UserService {
 	@Override
 	public String getDeviceIdByUserName(String userName) {
 		return userRepository.getDeviceIdByUserName(userName);
+	}
+
+	@Override
+	public List<String> getEmailByHomeId(String homeId) {
+		return userRepository.getEmailByHomeId(homeId);
 	}
 
 

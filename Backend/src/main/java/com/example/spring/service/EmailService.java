@@ -21,22 +21,6 @@ public class EmailService {
 
         javaMailSender.send(message);
     }
-    public void sendHtmlEmail(String to, String subject, String htmlBody) {
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper;
-
-        try {
-            helper = new MimeMessageHelper(message, true);
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(htmlBody, true); // Đặt tham số thứ hai là true để bật chế độ HTML
-
-            javaMailSender.send(message);
-        } catch (MessagingException e) {
-            e.printStackTrace(); // Xử lý exception theo cách thích hợp cho ứng dụng của bạn
-        }
-    }
-
 
     public void sendFireAlertEmail(String to) {
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -47,7 +31,6 @@ public class EmailService {
             helper.setTo(to);
             helper.setSubject("CẢNH BÁO CHÁY!");
 
-            // Sử dụng mã HTML và CSS cảnh báo cháy ở đây
             String htmlContent ="<!DOCTYPE html>\n" +
                     "<html lang=\"vi\">\n" +
                     "<head>\n" +
@@ -148,7 +131,7 @@ public class EmailService {
 
             javaMailSender.send(message);
         } catch (MessagingException e) {
-            e.printStackTrace(); // Xử lý exception theo cách thích hợp cho ứng dụng của bạn
+            e.printStackTrace();
         }
     }
 }

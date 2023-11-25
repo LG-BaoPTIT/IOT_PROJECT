@@ -40,9 +40,6 @@ public class LightController {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    @Autowired
-    private EmailService emailService;
-
     @PostMapping("/changeLightStatus")
    // @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> changeLightStatus(@RequestBody LightDTO lightDTO)  {
@@ -61,9 +58,6 @@ public class LightController {
 
         String sensorTopic = "/topic/light_data/" + lightDTO.getHome_id();
         messagingTemplate.convertAndSend(sensorTopic, lightDTO);
-
-        //emailService.sendEmail("bao2002pytn@gmail.com", "Test Subject", "Hello, this is a test email!");
-        emailService.sendFireAlertEmail("bao2002pytn@gmail.com");
         return ResponseEntity.status(HttpStatus.OK).body("on/off light successfully.");
     }
 }
