@@ -27,7 +27,7 @@ function App() {
       {!user ? <>
         <Route path='/login' element={<Login setUser={setUser} />} />
         <Route path='*' element={<Navigate to={'/login'} replace />}/>
-      </> : <>
+      </> : <> 
         <Route exact index element={<Home/>} ></Route>
         <Route path = "profile" element = {<Profile/>}></Route>
         <Route path = "action-history" element = {<Action/>}></Route>

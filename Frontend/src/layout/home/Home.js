@@ -21,9 +21,25 @@ import LightOf from "../../img/big-light.png";
 import FanOff from "../../img/fan.png";
 import FanOn from "../../img/fan (1).png";
 import {HiBars3} from "react-icons/hi2";
-
+import {
+    StompSessionProvider,
+    useSubscription,
+  } from "react-stomp-hooks";
 const client = new W3CWebSocket('ws://localhost:8000');
 const cx = classNames.bind(styles);
+
+export default function DashBoard () {
+    return (
+        //Initialize Stomp connection, will use SockJS for http(s) and WebSocket for ws(s)
+        //The Connection can be used by all child components via the hooks or hocs.
+        <StompSessionProvider
+          url={"ws://localhost:8080/ws"}
+          //All options supported by @stomp/stompjs can be used here
+        >
+          <Home />
+        </StompSessionProvider>
+      );
+}
 
 function Home() {
     const location = useLocation();
@@ -35,7 +51,9 @@ function Home() {
     const [dataSensor, setDataSensor] = useState(null);
     const [dustLevel, setDustLevel] = useState(null);
     const [isDustAbout80, setIsDustAbout80] = useState(false);
-
+    const [lastMessage, setLastMessage] = useState("No message received yet");
+    useSubscription("/topic/DHT11_data/SMH-001/DHT11_S", (message) => setDataSensor(JSON.parse(message.body)));
+    console.log(dataSensor)
     const getFormattedTimestamp = () =>{
         const date = new Date();
         const year = date.getFullYear();
@@ -89,20 +107,6 @@ function Home() {
         //     };
         // };
     }, [isDustAbout80]);
-
-    useEffect(() => {
-        client.onopen = () => {
-            console.log('WebSocket Client Connected');
-        };
-
-        client.onmessage = (msg) => {
-            const data = JSON.parse(msg.data);
-            setDataSensor(data);
-        };
-        return () => {
-            client.close();
-        }
-    }, [dataSensor]);
 
     const renderTippy = (prop) => {
         return (
@@ -175,13 +179,10 @@ function Home() {
             <div className={cx('container_app-header')}>
                 <div className={cx('row')}>
                     <div className={cx('col-3')}>
-                        <Temperature temp = {dataSensor ? dataSensor["temp"] : ''}/>
+                        <Temperature temp = {dataSensor ? dataSensor.temperature : ''}/>
                     </div>
                     <div className={cx('col-3')}>
-                        <Humidity humidity = {dataSensor ? dataSensor["humidity"] : ''}/>
-                    </div>
-                    <div className={cx('col-3')}>
-                        <Brightness brightness = {dataSensor ? dataSensor["bright"] : ''}/>
+                        <Humidity humidity = {dataSensor ? dataSensor.humidity : ''}/>
                     </div>
                     <div className={cx('col-3')}>
                         <DustLevel dustLevel = {dustLevel}/>
@@ -303,5 +304,3 @@ function Home() {
         </div>
     )
 }
-
-export default Home;
