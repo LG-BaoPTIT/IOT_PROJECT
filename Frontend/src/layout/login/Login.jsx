@@ -1,12 +1,27 @@
 import axios from "axios"
 import { useState } from "react"
+import { login, setHeader } from "../../api"
 
-const Login = () => {
+const Login = ({ setUser }) => {
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
+  const [errMsg, setErrMsg] = useState('')
 
-  const onLogin = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    
+    await login({userName, passWord: password})
+      .then(res => {
+        console.log(res)
+        if(res.status === 200) {
+          setErrMsg('')
+          setHeader(res.data.token)
+          setUser(true)
+        } else {
+          setErrMsg(res.response.data)
+        }
+      })
+      .catch(e => console.log(e))
   }
 
   return (
@@ -15,20 +30,26 @@ const Login = () => {
       
       <header style={{fontSize: '48px', color: '#0d6efd', fontWeight: 'bold', textAlign: 'center', marginBottom: '40px'}}>Login</header>
         <div class="form-outline mb-4">
-          <input type="email" id="form2Example1" class="form-control" value={userName} onChange={e => setUserName(e.value)} />
-          <label class="form-label" for="form2Example1">Username</label>
+          <input type="email" id="form2Example1" class="form-control" value={userName} onChange={e => setUserName(e.target.value)} />
+          <label class="form-label" htmlFor="form2Example1">Username</label>
         </div>
 
-        <div class="form-outline mb-4">
-          <input type="password" id="form2Example2" class="form-control" value={password} onChange={e => setPassword(e.value)} />
-          <label class="form-label" for="form2Example2">Password</label>
+        <div class="form-outline mb-2">
+          <input type="password" id="form2Example2" class="form-control" value={password} onChange={e => setPassword(e.target.value)} />
+          <label class="form-label" htmlFor="form2Example2">Password</label>
         </div>
+
+        {
+          !!errMsg && <div className="form-outline mb-4">
+            <div class="invalid-feedback" style={{display: 'block'}}>{errMsg}</div>
+          </div>
+        }
 
         <div class="row mb-4">
           <div class="col d-flex justify-content-center">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
-              <label class="form-check-label" for="form2Example31"> Remember me </label>
+              <input class="form-check-input" type="checkbox" id="form2Example31" />
+              <label class="form-check-label" htmlFor="form2Example31"> Remember me </label>
             </div>
           </div>
 
@@ -37,11 +58,7 @@ const Login = () => {
           </div>
         </div>
 
-        <button type="button" class="btn btn-primary btn-block mb-4" style={{width: '100%'}} onClick={() => onLogin()}>Sign in</button>
-
-        <div class="text-center">
-          <p>Not a member? <a href="#!">Register</a></p>
-        </div>
+        <button type="button" class="btn btn-primary btn-block mb-4" style={{width: '100%'}} onClick={e => onSubmit(e)}>Sign in</button>
       </form>
     </div>
   )
