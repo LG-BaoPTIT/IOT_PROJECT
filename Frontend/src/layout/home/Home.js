@@ -293,9 +293,9 @@ function Home() {
                     </div>
                 </div>
                 <div className={cx('row')}>
-                    <div className={cx('col-6')}>
+                    {/* <div className={cx('col-6')}>
                         <AreaChart data = {dataSensor ? dataSensor : ''}/>
-                    </div>
+                    </div> */}
                     <div className={cx('col-6')}>
                         <DustChartComponent data = {dustLevel}/>
                     </div>
