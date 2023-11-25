@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin
 @Controller
+
 public class TemperatureController {
     @Autowired
     private RealTimeDataService realTimeDataService;
