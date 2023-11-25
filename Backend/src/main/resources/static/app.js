@@ -5,7 +5,7 @@ const stompClient = new StompJs.Client({
 stompClient.onConnect = (frame) => {
     setConnected(true);
     console.log('Connected: ' + frame);
-    stompClient.subscribe('/topic/door_data/SMH-001', (greeting) => {
+    stompClient.subscribe('/topic/DHT11_data/SMH-001/DHT11_S', (greeting) => {
         console.log(greeting.body);
         showGreeting(JSON.parse(greeting.body).humidity);
     });
