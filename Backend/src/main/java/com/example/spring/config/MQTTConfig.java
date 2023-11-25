@@ -33,6 +33,7 @@ import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -71,6 +72,12 @@ public class MQTTConfig {
 
     @Autowired
     private DoorService doorService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Bean
     public MqttPahoClientFactory mqttClientFactory() {
@@ -123,21 +130,21 @@ public class MQTTConfig {
                         DHTSensorLog dhtSensorLog = modelMapper.map(dhtDataDTO, DHTSensorLog.class);
                         dhtSensorLog.setTimestamp(new Date());
                         dht11Service.save(dhtSensorLog);
-                        String sensorTopic = "/topic/DHT11_data/" + dhtDataDTO.getHome_id();
+                        String sensorTopic = "/topic/DHT11_data/" + dhtDataDTO.getHome_id() + "/" + dhtDataDTO.getDhtid();
                         messagingTemplate.convertAndSend(sensorTopic, dhtDataDTO);
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
                     }
 
                 }
-                if(topic.equals("led_state")) {
+                if(topic.equals("light_data")) {
                     String payload = message.getPayload().toString();
                     try {
                         LightDTO lightDTO = mapper.readValue(payload, LightDTO.class);
                         LightLog lightLog = modelMapper.map(lightDTO, LightLog.class);
                         lightLog.setTimestamp(new Date());
-                        lightService.save(lightLog);
-                        String sensorTopic = "/topic/light_data/" + lightDTO.getHome_id();
+
+                        String sensorTopic = "/topic/light_data/" + lightDTO.getHome_id() + "/" + lightDTO.getLight_id() ;
                         messagingTemplate.convertAndSend(sensorTopic, lightDTO);
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
@@ -153,9 +160,13 @@ public class MQTTConfig {
                         GasSensorLog gasSensorLog = modelMapper.map(gasSensorDTO,GasSensorLog.class);
                         if(gasSensorLog.getGasStatus().equals("1")){
                             gasSensorService.save(gasSensorLog);
+                            List<String> listEmail = userService.getEmailByHomeId(gasSensorDTO.getHome_id());
+                            for(String e : listEmail){
+                                emailService.sendFireAlertEmail(e);
+                            }
 
                         }
-                        String sensorTopic = "/topic/gas_data/" + gasSensorDTO.getHome_id();
+                        String sensorTopic = "/topic/gas_data/" + gasSensorDTO.getHome_id() + "/" + gasSensorDTO.getGas_sensor_id();
                         messagingTemplate.convertAndSend(sensorTopic, gasSensorDTO);
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
@@ -171,12 +182,13 @@ public class MQTTConfig {
                         System.out.println(payload);
                         System.out.println(doorDataDTO.getHome_id());
 
-                        String sensorTopic = "/topic/door_data/" + doorDataDTO.getHome_id();
+                        String sensorTopic = "/topic/door_data/" + doorDataDTO.getHome_id() + "/" + doorDataDTO.getDoor_id();
                         messagingTemplate.convertAndSend(sensorTopic, doorDataDTO);
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
                     }
                 }
+
             }
         };
     }
