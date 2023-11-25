@@ -28,10 +28,10 @@ const cx = classNames.bind(styles);
 function Home() {
     const location = useLocation();
     const props = location.state;
-    const [controlLight, setControlLight] = useState(props ? props.stateLed : false);
-    const [controlFan, setControlFan] = useState(props ? props.stateFan: false);
-    const [stateLed, setStateLed] = useState(false);
-    const [stateFan, setStateFan] = useState(false);
+    const [controlLight1, setControlLight1] = useState(props ? props.stateLed : false);
+    const [controlLight2, setControlLight2] = useState(props ? props.stateLed : false);
+    const [controlLight3, setControlLight3] = useState(props ? props.stateLed : false);
+    const [controlFan, setControlFan] = useState(props ? props.stateFan : false);
     const [dataSensor, setDataSensor] = useState(null);
     const [dustLevel, setDustLevel] = useState(null);
     const [isDustAbout80, setIsDustAbout80] = useState(false);
@@ -47,47 +47,47 @@ function Home() {
         return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
     };
 
+    // useEffect(() => {
+    //     const generateRandomDustLevel = () => {
+    //         const dust = Math.floor(Math.random() * (100 - 15)) + 15;
+    //         setDustLevel(dust);
+
+    //         if (dust >= 80) {
+    //             setStateFan(true);
+    //             setStateLed(true);
+    //             setIsDustAbout80(true);
+    //             axios.post('http://localhost:8008/mosquitto/warning')
+    //                 .then(response => {
+    //                     console.log(response.data);
+    //                 })
+    //                 .catch(err => {
+    //                     console.log(err);
+    //                 });
+    //         }
+    //         else {
+    //             setStateFan(false);
+    //             setStateLed(false);
+    //             setIsDustAbout80(false);
+    //         }
+    //     }
+
+    //     generateRandomDustLevel();
+    //     const dustLevelInterval = setInterval(generateRandomDustLevel, 3000);
+    //     return () => {
+    //         clearInterval(dustLevelInterval);
+    //     };
+    // }, []);
+
     useEffect(() => {
-        const generateRandomDustLevel = () => {
-            const dust = Math.floor(Math.random() * (100 - 15)) + 15;
-            setDustLevel(dust);
-
-            if (dust >= 80) {
-                setStateFan(true);
-                setStateLed(true);
-                setIsDustAbout80(true);
-                axios.post('http://localhost:8008/mosquitto/warning')
-                    .then(response => {
-                        console.log(response.data);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            }
-            else {
-                setStateFan(false);
-                setStateLed(false);
-                setIsDustAbout80(false);
-            }
-        }
-
-        generateRandomDustLevel();
-        const dustLevelInterval = setInterval(generateRandomDustLevel, 3000);
-        return () => {
-            clearInterval(dustLevelInterval);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (isDustAbout80) {
-            const intervalId = setInterval(() => {
-                setStateFan((prev) => !prev);
-                setStateLed((prev) => !prev);
-            }, 300);
-            return () => {
-                clearInterval(intervalId);
-            };
-        };
+        // if (isDustAbout80) {
+        //     const intervalId = setInterval(() => {
+        //         setStateFan((prev) => !prev);
+        //         setStateLed((prev) => !prev);
+        //     }, 300);
+        //     return () => {
+        //         clearInterval(intervalId);
+        //     };
+        // };
     }, [isDustAbout80]);
 
     useEffect(() => {
@@ -107,46 +107,54 @@ function Home() {
     const renderTippy = (prop) => {
         return (
             <div>
-                <Nav props = {{stateLed: controlLight, stateFan: controlFan}}/>
+                <Nav props = {{stateLed1: controlLight1, stateLead2: controlLight2, stateLed3: controlLight3, stateFan: controlFan}}/>
             </div>
         )
     }
     
-    const handleClick = (deviceType) => {
-        const isLightOn = controlLight;
-        const isFanOn = controlFan;
+    const handleClick = (deviceType, lightNum) => {
+        let status
+        let light_id
+        const home_id = localStorage.getItem('home_id')
 
         const time = getFormattedTimestamp();
-        let action;
         if (deviceType === 'Light') {
-            setControlLight(!isLightOn);
-            action =
-                (isLightOn && isFanOn) ? 'Off Led On Fan' :
-                (isLightOn && !isFanOn) ? 'Off Led Off Fan' :
-                (!isLightOn && !isFanOn) ? 'On Led Off Fan' : 'On Led On Fan';
+            if(lightNum === 1) {
+                light_id = 'PB_001'
+                status = controlLight1 ? 'OFF' : 'ON'
+                setControlLight1(prev => !prev)
+            }
+            if(lightNum === 2) {
+                light_id = 'PK_001'
+                status = controlLight2 ? 'OFF' : 'ON'
+                setControlLight2(prev => !prev)
+            }
+            if(lightNum === 3) {
+                light_id = 'PN_001'
+                status = controlLight3 ? 'OFF' : 'ON'
+                setControlLight3(prev => !prev)
+            }
+
+            axios.post('http://localhost:8080/changeLightStatus', {
+                "home_id": home_id,
+                "light_id": light_id,
+                status,
+            })
+                .then(res => console.log(res))
+                .catch(e => console.log(e))
         }
         else {
-            setControlFan(!isFanOn);
-            action =
-                (isLightOn && isFanOn) ? 'On Led Off Fan' :
-                (isLightOn && !isFanOn) ? 'On Led On Fan' :
-                (!isLightOn && !isFanOn) ? 'Off Led On Fan' : 'Off Led Off Fan';
-        }
+            status = controlFan ? 'OFF' : 'ON'
+            setControlFan(prev => !prev);
 
-        const data = {
-            ssid: 1,
-            type: deviceType,
-            action,
-            time,
-        };
-
-        axios.post('http://localhost:8008/mosquitto/led/controll', data)
-            .then((response) => {
-                console.log(response.data);
+            axios.post('http://localhost:8080/changeDoorStatus', {
+                home_id,
+                door_id: 'MAIN_DOOR',
+                status,
             })
-            .catch((error) => {
-                console.error(error);
-            });
+                .then(res => console.log(res))
+                .catch(e => console.log(e))
+        }
     }
     return (
         <div className={cx('container_app')}>
@@ -159,7 +167,7 @@ function Home() {
                         offset={[-85, -3]} placement="bottom"
                     >
                         <span className={cx('icon-nav')}>
-                                <HiBars3/>
+                            <HiBars3/>
                         </span>
                     </Tippy>
                 </div>
@@ -181,40 +189,86 @@ function Home() {
                 </div>
             </div>
             <div className={cx('container_app-body')}>
-                <div className={cx('row')}>
-                    <div className={cx('col-6')}>
-                        <AreaChart data = {dataSensor ? dataSensor : ''}/>
-                    </div>
-                    <div className={cx('col-4')}>
-                        <DustChartComponent data = {dustLevel}/>
-                    </div>
-                    <div className={cx('col-2')}>
+                <div className='row'>
+                    <div className="col-3">
                         <div className={cx('item-light')}>
                             {isDustAbout80 ? (
-                                stateLed ? (
+                                controlLight1 ? (
                                 <img src={ImgLight} alt="Light On" className={cx('light-on')} />
                                 ) : (
                                 <img src={LightOf} alt="Light Off" className={cx('light-off')} />
                                 )
-                            ) : controlLight ? (
+                            ) : controlLight1 ? (
                                 <div className={cx('item')}>
                                     <img src={ImgLight} alt="Light On" className={cx('light-on')} />
-                                    <button onClick={() => handleClick('Light')} className={cx('off')}>
+                                    <button onClick={() => handleClick('Light', 1)} className={cx('off')}>
                                         OFF
                                     </button>
                                 </div>
                             ) : (
                                 <div  className={cx('item')}>
                                     <img src={LightOf} alt="Light Off" className={cx('light-off')} />
-                                    <button onClick={() => handleClick('Light')} className={cx('on')}>
+                                    <button onClick={() => handleClick('Light', 1)} className={cx('on')}>
                                         ON
                                     </button>
                                 </div>
                             )}
                         </div>
-                        <div className={cx('item-fan')}>
+                    </div>
+                    <div className="col-3">
+                        <div className={cx('item-light')}>
                             {isDustAbout80 ? (
-                                stateFan ? (
+                                controlLight2 ? (
+                                <img src={ImgLight} alt="Light On" className={cx('light-on')} />
+                                ) : (
+                                <img src={LightOf} alt="Light Off" className={cx('light-off')} />
+                                )
+                            ) : controlLight2 ? (
+                                <div className={cx('item')}>
+                                    <img src={ImgLight} alt="Light On" className={cx('light-on')} />
+                                    <button onClick={() => handleClick('Light', 2)} className={cx('off')}>
+                                        OFF
+                                    </button>
+                                </div>
+                            ) : (
+                                <div  className={cx('item')}>
+                                    <img src={LightOf} alt="Light Off" className={cx('light-off')} />
+                                    <button onClick={() => handleClick('Light', 2)} className={cx('on')}>
+                                        ON
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="col-3">
+                        <div className={cx('item-light')}>
+                            {isDustAbout80 ? (
+                                controlLight3 ? (
+                                <img src={ImgLight} alt="Light On" className={cx('light-on')} />
+                                ) : (
+                                <img src={LightOf} alt="Light Off" className={cx('light-off')} />
+                                )
+                            ) : controlLight3 ? (
+                                <div className={cx('item')}>
+                                    <img src={ImgLight} alt="Light On" className={cx('light-on')} />
+                                    <button onClick={() => handleClick('Light', 3)} className={cx('off')}>
+                                        OFF
+                                    </button>
+                                </div>
+                            ) : (
+                                <div  className={cx('item')}>
+                                    <img src={LightOf} alt="Light Off" className={cx('light-off')} />
+                                    <button onClick={() => handleClick('Light', 3)} className={cx('on')}>
+                                        ON
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="col-3">
+                        <div className={cx('item-fan')} style={{marginTop: 40}}>
+                            {isDustAbout80 ? (
+                                controlFan ? (
                                     <img src={ImgLight} alt="Fan On" className={cx('fan-on')} />
                                     ) : (
                                     <img src={LightOf} alt="Fan Off" className={cx('fan-off')} />
@@ -234,7 +288,15 @@ function Home() {
                                     </button>
                                 </div>
                             )}
-                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={cx('row')}>
+                    <div className={cx('col-6')}>
+                        <AreaChart data = {dataSensor ? dataSensor : ''}/>
+                    </div>
+                    <div className={cx('col-6')}>
+                        <DustChartComponent data = {dustLevel}/>
                     </div>
                 </div>
             </div>
