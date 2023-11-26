@@ -41,16 +41,16 @@ export default function DashBoard() {
 function Home() {
     const location = useLocation();
     const props = location.state;
-    const [controlLight1, setControlLight1] = useState(
+    const [light1, setLight1] = useState(
         props ? props.stateLed : false
     );
-    const [controlLight2, setControlLight2] = useState(
+    const [light2, setLight2] = useState(
         props ? props.stateLed : false
     );
-    const [controlLight3, setControlLight3] = useState(
+    const [light3, setLight3] = useState(
         props ? props.stateLed : false
     );
-    const [controlFan, setControlFan] = useState(
+    const [door, setDoor] = useState(
         props ? props.stateFan : false
     );
     const [dataSensor, setDataSensor] = useState(null);
@@ -62,8 +62,19 @@ function Home() {
     useSubscription("/topic/gas_data/SMH-001/GAS_SENSOR_S", (message) =>
         setGas(JSON.parse(message.body))
     );
+    useSubscription('/topic/light_data/SMH-001/PB_001', message => {
+        setLight1(JSON.parse(message.body)?.status === 'ON')
+    })
+    useSubscription('/topic/light_data/SMH-001/PK_001', message => {
+        setLight2(JSON.parse(message.body)?.status === 'ON')
+    })
+    useSubscription('/topic/light_data/SMH-001/PN_001', message => {
+        setLight3(JSON.parse(message.body)?.status === 'ON')
+    })
+    useSubscription('/topic/door_data/SMH-001/MAIN_DOOR', message => {
+        setDoor(JSON.parse(message.body)?.status === 'Opened')
+    })
 
-    console.log(dataSensor);
     const getFormattedTimestamp = () => {
         const date = new Date();
         const year = date.getFullYear();
@@ -80,10 +91,10 @@ function Home() {
             <div>
                 <Nav
                     props={{
-                        stateLed1: controlLight1,
-                        stateLead2: controlLight2,
-                        stateLed3: controlLight3,
-                        stateFan: controlFan,
+                        stateLed1: light1,
+                        stateLead2: light2,
+                        stateLed3: light3,
+                        stateFan: door,
                     }}
                 />
             </div>
@@ -99,18 +110,18 @@ function Home() {
         if (deviceType === "Light") {
             if (lightNum === 1) {
                 light_id = "PB_001";
-                status = controlLight1 ? "OFF" : "ON";
-                setControlLight1((prev) => !prev);
+                status = light1 ? "OFF" : "ON";
+                setLight1((prev) => !prev);
             }
             if (lightNum === 2) {
                 light_id = "PK_001";
-                status = controlLight2 ? "OFF" : "ON";
-                setControlLight2((prev) => !prev);
+                status = light2 ? "OFF" : "ON";
+                setLight2((prev) => !prev);
             }
             if (lightNum === 3) {
                 light_id = "PN_001";
-                status = controlLight3 ? "OFF" : "ON";
-                setControlLight3((prev) => !prev);
+                status = light3 ? "OFF" : "ON";
+                setLight3((prev) => !prev);
             }
 
             axios
@@ -122,8 +133,8 @@ function Home() {
                 .then((res) => console.log(res))
                 .catch((e) => console.log(e));
         } else {
-            status = controlFan ? "OFF" : "ON";
-            setControlFan((prev) => !prev);
+            status = door ? "OFF" : "ON";
+            setDoor((prev) => !prev);
 
             axios
                 .post("http://localhost:8080/changeDoorStatus", {
@@ -182,7 +193,7 @@ function Home() {
                 <div className="row">
                     <div className="col-3">
                         <div className={cx("item-light")}>
-                            {controlLight1 ? (
+                            {light1 ? (
                                 <div className={cx("item")}>
                                     <img
                                         src={ImgLight}
@@ -215,7 +226,7 @@ function Home() {
                     </div>
                     <div className="col-3">
                         <div className={cx("item-light")}>
-                            {controlLight2 ? (
+                            {light2 ? (
                                 <div className={cx("item")}>
                                     <img
                                         src={ImgLight}
@@ -248,7 +259,7 @@ function Home() {
                     </div>
                     <div className="col-3">
                         <div className={cx("item-light")}>
-                            {controlLight3 ? (
+                            {light3 ? (
                                 <div className={cx("item")}>
                                     <img
                                         src={ImgLight}
@@ -284,7 +295,7 @@ function Home() {
                             className={cx("item-fan")}
                             style={{ marginTop: 40 }}
                         >
-                            {controlFan ? (
+                            {door ? (
                                 <div className={cx("item")}>
                                     <img
                                         src={FanOn}
