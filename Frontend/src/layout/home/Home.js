@@ -148,7 +148,7 @@ function Home() {
                 .catch(e => console.log(e))
         }
         else {
-            status = controlFan ? 'OFF' : 'ON'
+            status = controlFan ? 'Closed' : 'Opened'
             setControlFan(prev => !prev);
 
             axios.post('http://localhost:8080/changeDoorStatus', {
@@ -278,14 +278,14 @@ function Home() {
                                 <div className={cx('item')}>
                                     <img src={FanOn} alt="Fan On" className={cx('fan-on')} />
                                     <button onClick={() => handleClick('Fan')} className={cx('off')}>
-                                        OFF
+                                        CLOSE
                                     </button>
                                 </div>
                             ) : (
                                 <div className={cx('item')}>
                                     <img src={FanOff} alt="Fan Off" className={cx('fan-off')} />
                                     <button onClick={() => handleClick('Fan')} className={cx('on')}>
-                                        ON
+                                        OPEN
                                     </button>
                                 </div>
                             )}
