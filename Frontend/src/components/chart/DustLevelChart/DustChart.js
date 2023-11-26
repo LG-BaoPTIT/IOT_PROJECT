@@ -10,9 +10,13 @@ function DustChartComponent(props) {
   useEffect(() => {
     if (props.data !== null) {
       const newData = [...data];
+      const date = new Date(props.data.timestamp);
+
+      const minutes = date.getMinutes();
+      const seconds = date.getSeconds();
       newData.push({
-        name: "Time",
-        DustLevel: props.data,
+        name: `${minutes}:${seconds}`,
+        DustLevel: props.data.value,
       });
       if (newData.length === 5) {
         newData.shift();

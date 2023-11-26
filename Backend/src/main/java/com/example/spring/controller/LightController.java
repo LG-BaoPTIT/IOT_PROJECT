@@ -44,7 +44,7 @@ public class LightController {
 
     @PostMapping("/changeLightStatus")
    // @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> changeLightStatus(@RequestBody LightDTO lightDTO)  {
+    public ResponseEntity<?> changeLightStatus(@RequestBody LightDTO lightDTO) {
         if(lightDTO==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         }

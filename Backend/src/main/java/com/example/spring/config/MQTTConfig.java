@@ -127,6 +127,7 @@ public class MQTTConfig {
                     //System.out.println(payload);
                     try {
                         DhtDataDTO dhtDataDTO = mapper.readValue(payload, DhtDataDTO.class);
+                        dhtDataDTO.setTimestamp(new Date());
                         DHTSensorLog dhtSensorLog = modelMapper.map(dhtDataDTO, DHTSensorLog.class);
                         dhtSensorLog.setTimestamp(new Date());
                         dht11Service.save(dhtSensorLog);
@@ -156,6 +157,7 @@ public class MQTTConfig {
                     String payload = message.getPayload().toString();
                     try {
                         GasSensorDTO gasSensorDTO = mapper.readValue(payload, GasSensorDTO.class);
+                        gasSensorDTO.setTimestamp(new Date());
                         gasSensorDTO.setTimestamp(new Date());
                         GasSensorLog gasSensorLog = modelMapper.map(gasSensorDTO,GasSensorLog.class);
                         if(gasSensorLog.getGasStatus().equals("1")){
