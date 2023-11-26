@@ -115,8 +115,8 @@ function Home() {
 
             axios
                 .post("http://localhost:8080/changeLightStatus", {
-                    home_id: home_id,
-                    light_id: light_id,
+                    home_id,
+                    light_id,
                     status,
                 })
                 .then((res) => console.log(res))
@@ -295,7 +295,7 @@ function Home() {
                                         onClick={() => handleClick("Fan")}
                                         className={cx("off")}
                                     >
-                                        OFF
+                                        CLOSE
                                     </button>
                                 </div>
                             ) : (
@@ -309,7 +309,7 @@ function Home() {
                                         onClick={() => handleClick("Fan")}
                                         className={cx("on")}
                                     >
-                                        ON
+                                        OPEN
                                     </button>
                                 </div>
                             )}
