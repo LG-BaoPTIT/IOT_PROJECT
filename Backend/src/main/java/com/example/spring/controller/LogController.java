@@ -22,7 +22,7 @@ public class LogController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/logDoor")
+    @PostMapping("/SearchLog")
     public ResponseEntity<?> getLogDoor(@RequestBody DataSearch dataSearch){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String homeId = userService.getHomeIdByUserName(authentication.getName());
