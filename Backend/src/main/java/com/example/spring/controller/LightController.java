@@ -51,7 +51,7 @@ public class LightController {
 
         System.out.println("Người dùng " + userName + " gửi yêu cầu đến URI /changeLightStatus" );
 
-        String topic =userService.getDeviceIdByUserName(userName) + "/light_state" + "/" + lightDTO.getLight_id();
+        String topic =userService.getHomeIdByUserName(userName) + "/light_state" + "/" + lightDTO.getLight_id();
         System.out.println(topic + " " + lightDTO.getHome_id());
 
         mqttService.sendMessage(topic,lightDTO.getStatus());

@@ -9,6 +9,6 @@ public interface UserService {
 	boolean existsByUserName(String userName);
 	boolean existsByEmail(String email);
 	Users saveOrUpdate(Users user);
-	String getDeviceIdByUserName(String userName);
+	String getHomeIdByUserName(String userName);
 	List<String> getEmailByHomeId(String homeId);
 }

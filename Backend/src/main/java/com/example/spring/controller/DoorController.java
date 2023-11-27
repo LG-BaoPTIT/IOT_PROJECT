@@ -53,7 +53,7 @@ public class DoorController {
         String sensorTopic = "/topic/door_data/" + doorDataDTO.getHome_id();
         messagingTemplate.convertAndSend(sensorTopic, doorDataDTO);
 
-        String topic =userService.getDeviceIdByUserName(userName)+ "/door_state/" + doorDataDTO.getDoor_id() ;
+        String topic =userService.getHomeIdByUserName(userName)+ "/door_state/" + doorDataDTO.getDoor_id() ;
         System.out.println(topic);
         mqttService.sendMessage(topic, doorDataDTO.getStatus());
 
