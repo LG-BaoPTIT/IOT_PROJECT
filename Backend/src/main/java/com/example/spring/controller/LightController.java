@@ -10,11 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin
 public class LightController {
     @Autowired
     private MQTTService mqttService;
@@ -31,7 +33,7 @@ public class LightController {
 
     @PostMapping("/changeLightStatus")
    // @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> changeLightStatus(@RequestBody LightDTO lightDTO)  {
+    public ResponseEntity<?> changeLightStatus(@RequestBody LightDTO lightDTO) {
         if(lightDTO==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         }

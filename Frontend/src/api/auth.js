@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const setHeader = (token) => {
-	axios.defaults.headers.common["Authorization"] = `Bear ${token}`;
+	axios.defaults.headers.common["Authorization"] = `${token}`;
 };
 
 export const login = async (value) => {
