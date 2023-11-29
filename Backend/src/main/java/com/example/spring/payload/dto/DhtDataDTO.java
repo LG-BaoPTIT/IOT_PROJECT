@@ -1,4 +1,5 @@
-package com.example.spring.dto;
+package com.example.spring.payload.dto;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +12,11 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LightDTO {
+public class DhtDataDTO {
 
     private String home_id;
-    private String light_id;
     private Date timestamp;
-    private String status;
+    private String dhtid;
+    private double humidity;
+    private double temperature;
 }

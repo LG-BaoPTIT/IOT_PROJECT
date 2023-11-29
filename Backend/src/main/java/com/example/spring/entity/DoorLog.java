@@ -33,5 +33,8 @@ public class DoorLog {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "idCard")
+    private String card_id;
+
 
 }

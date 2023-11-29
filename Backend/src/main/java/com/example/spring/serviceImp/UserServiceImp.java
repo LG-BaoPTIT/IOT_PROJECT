@@ -48,5 +48,10 @@ public class UserServiceImp implements UserService {
 		return userRepository.getEmailByHomeId(homeId);
 	}
 
+	@Override
+	public String getIdCardByUserName(String userName) {
+		return userRepository.getIdCardByUserName(userName);
+	}
+
 
 }

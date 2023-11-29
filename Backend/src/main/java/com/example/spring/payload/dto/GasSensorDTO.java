@@ -1,6 +1,6 @@
-package com.example.spring.dto;
+package com.example.spring.payload.dto;
 
-import jakarta.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,12 +10,12 @@ import java.util.Date;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class DoorDataDTO {
-
+@NoArgsConstructor
+public class GasSensorDTO {
     private String home_id;
-    private String door_id;
+    private String gas_sensor_id;
     private Date timestamp;
-    private String status;
+    private long value;
+    private String gasStatus;//0/1 => (khong phat hien khi gas/co phat hien khi gas)
 }

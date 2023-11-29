@@ -1,6 +1,6 @@
-package com.example.spring.dto;
+package com.example.spring.payload.dto;
 
-
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +12,11 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DhtDataDTO {
+public class DoorDataDTO {
 
     private String home_id;
+    private String door_id;
+    private String card_id;
     private Date timestamp;
-    private String dhtid;
-    private double humidity;
-    private double temperature;
+    private String status;
 }
