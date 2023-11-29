@@ -1,4 +1,4 @@
-package com.example.spring.dto;
+package com.example.spring.payload.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -18,5 +18,5 @@ public class DhtDataDTO {
     private Date timestamp;
     private String dhtid;
     private double humidity;
-    private  double temperature;
+    private double temperature;
 }

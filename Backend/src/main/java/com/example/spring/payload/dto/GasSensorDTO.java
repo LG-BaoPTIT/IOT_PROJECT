@@ -1,4 +1,4 @@
-package com.example.spring.dto;
+package com.example.spring.payload.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -17,5 +17,5 @@ public class GasSensorDTO {
     private String gas_sensor_id;
     private Date timestamp;
     private long value;
-    private int gasStatus;//0/1 => (khong phat hien khi gas/co phat hien khi gas)
+    private String gasStatus;//0/1 => (khong phat hien khi gas/co phat hien khi gas)
 }

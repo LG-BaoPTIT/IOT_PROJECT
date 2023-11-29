@@ -1,13 +1,12 @@
 package com.example.spring.config;
 
-import com.example.spring.dto.DhtDataDTO;
-import com.example.spring.dto.DoorDataDTO;
-import com.example.spring.dto.GasSensorDTO;
-import com.example.spring.dto.LightDTO;
+import com.example.spring.payload.dto.DhtDataDTO;
+import com.example.spring.payload.dto.DoorDataDTO;
+import com.example.spring.payload.dto.GasSensorDTO;
+import com.example.spring.payload.dto.LightDTO;
 import com.example.spring.entity.DHTSensorLog;
 import com.example.spring.entity.DoorLog;
 import com.example.spring.entity.GasSensorLog;
-import com.example.spring.entity.LightLog;
 import com.example.spring.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,10 +47,6 @@ public class MQTTConfig {
     @Value("${mqtt.password}")
     private String password;
 
-
-    @Autowired
-    private RealTimeDataService realTimeDataService;
-
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
@@ -64,8 +59,6 @@ public class MQTTConfig {
     @Autowired
     private DHT11SensorService dht11Service;
 
-    @Autowired
-    private LightService lightService;
 
     @Autowired
     private GasSensorService gasSensorService;
@@ -142,8 +135,7 @@ public class MQTTConfig {
                     String payload = message.getPayload().toString();
                     try {
                         LightDTO lightDTO = mapper.readValue(payload, LightDTO.class);
-                        LightLog lightLog = modelMapper.map(lightDTO, LightLog.class);
-                        lightLog.setTimestamp(new Date());
+                        lightDTO.setTimestamp(new Date());
 
                         String sensorTopic = "/topic/light_data/" + lightDTO.getHome_id() + "/" + lightDTO.getLight_id() ;
                         messagingTemplate.convertAndSend(sensorTopic, lightDTO);

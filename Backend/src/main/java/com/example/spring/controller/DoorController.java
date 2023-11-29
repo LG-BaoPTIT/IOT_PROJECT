@@ -1,10 +1,8 @@
 package com.example.spring.controller;
 
-import com.example.spring.dto.DoorDataDTO;
+import com.example.spring.payload.dto.DoorDataDTO;
 import com.example.spring.entity.DoorLog;
-import com.example.spring.payload.request.DoorStatus;
 import com.example.spring.service.DoorService;
-import com.example.spring.service.LightService;
 import com.example.spring.service.MQTTService;
 import com.example.spring.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.PublicKey;
 import java.util.Date;
 
 @RestController
@@ -55,11 +52,12 @@ public class DoorController {
         String sensorTopic = "/topic/door_data/" + doorDataDTO.getHome_id();
         messagingTemplate.convertAndSend(sensorTopic, doorDataDTO);
 
-        String topic =userService.getDeviceIdByUserName(userName)+ "/door_state/" + doorDataDTO.getDoor_id() ;
+        String topic =userService.getHomeIdByUserName(userName)+ "/door_state/" + doorDataDTO.getDoor_id() ;
         System.out.println(topic);
         mqttService.sendMessage(topic, doorDataDTO.getStatus());
 
         ModelMapper modelMapper = new ModelMapper();
+        doorDataDTO.setCard_id(userService.getIdCardByUserName(userName));
         doorService.save(modelMapper.map(doorDataDTO, DoorLog.class));
         return ResponseEntity.status(HttpStatus.OK).body("open/close door successfully.");
 

@@ -39,13 +39,18 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public String getDeviceIdByUserName(String userName) {
-		return userRepository.getDeviceIdByUserName(userName);
+	public String getHomeIdByUserName(String userName) {
+		return userRepository.getHomeIdByUserName(userName);
 	}
 
 	@Override
 	public List<String> getEmailByHomeId(String homeId) {
 		return userRepository.getEmailByHomeId(homeId);
+	}
+
+	@Override
+	public String getIdCardByUserName(String userName) {
+		return userRepository.getIdCardByUserName(userName);
 	}
 
 

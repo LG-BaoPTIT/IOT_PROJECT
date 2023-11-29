@@ -1,21 +1,19 @@
-package com.example.spring.dto;
+package com.example.spring.payload.response;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DoorDataDTO {
-
-    private String home_id;
-    private String door_id;
+public class LogDoorDTO {
+    private String doorId;
     private Date timestamp;
     private String status;
+    private String name;
+    private String description;
 }
