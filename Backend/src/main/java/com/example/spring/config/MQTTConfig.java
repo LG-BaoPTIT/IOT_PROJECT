@@ -48,10 +48,6 @@ public class MQTTConfig {
     @Value("${mqtt.password}")
     private String password;
 
-
-    @Autowired
-    private RealTimeDataService realTimeDataService;
-
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
