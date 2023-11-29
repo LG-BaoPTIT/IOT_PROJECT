@@ -32,29 +32,11 @@ function Nav({props}) {
                     </div>
                 </Link>
 
-                <Link to = "/profile" state={props}>
-                    <div className={cx('nav-item')}>
-                        <div>
-                            <CgProfile className={cx('icon')}/>
-                            Profile
-                        </div>
-                    </div>
-                </Link>
-
-                <Link to = "/data-sensor" state={props}>
-                    <div className={cx('nav-item')}>
-                        <div>
-                            <MdOutlineSensors className={cx('icon')}/>
-                            Data Sensors
-                        </div>
-                    </div>
-                </Link>
-
                 <Link to = "/action-history" state={props}>
                     <div className={cx('nav-item')}>
                         <div>
                             <GrHistory className={cx('icon')}/>
-                            Action History
+                            History
                         </div>
                     </div>
                 </Link>

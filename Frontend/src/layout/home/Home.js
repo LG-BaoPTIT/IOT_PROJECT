@@ -12,7 +12,7 @@ import Humidity from "../../components/humidity/Humidity";
 import Brightness from "../../components/brightness/Brightness";
 import DustLevel from "../../components/dustLevel/DustLevel";
 import AreaChart from "../../components/chart/DataSensorChart/AreaChart";
-import DustChartComponent from "../../components/chart/DustLevelChart/DustChart";
+import GasChart from "../../components/chart/DustLevelChart/DustChart";
 import Nav from "../../components/navbar/Nav";
 // import WebSocket from "../../websocket/WebSoket";
 
@@ -332,7 +332,7 @@ function Home() {
                         <AreaChart data={dataSensor ? dataSensor : ""} />
                     </div>
                     <div className={cx('col-6')}>
-                        <DustChartComponent data = {gas}/>
+                        <GasChart data = {gas}/>
                     </div>
                 </div>
             </div>

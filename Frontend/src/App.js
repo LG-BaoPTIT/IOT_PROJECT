@@ -1,7 +1,7 @@
 import Home from "./layout/home/Home";
 import Profile from "./layout/profile/Profile";
 import Datasensor from "./layout/data_sensor/DataSensor";
-import Action from "./layout/action_history/Action";
+import History from "./layout/action_history/Action";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Login from "./layout/login/Login";
@@ -30,8 +30,7 @@ function App() {
       </> : <> 
         <Route exact index element={<Home/>} ></Route>
         <Route path = "profile" element = {<Profile/>}></Route>
-        <Route path = "action-history" element = {<Action/>}></Route>
-        <Route path="data-sensor" element = {<Datasensor/>}></Route>
+        <Route path = "action-history" element = {<History/>}></Route>
         <Route path='*' element={<Navigate to={'/'} />} replace/>
       </>}
     </Routes>

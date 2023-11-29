@@ -5,7 +5,7 @@ import styles from './DustChart.module.scss';
 
 const cx = classNames.bind(styles);
 
-function DustChartComponent(props) {
+function GasChart(props) {
   const [data, setData] = useState([]);
   useEffect(() => {
     if (props.data !== null) {
@@ -16,7 +16,7 @@ function DustChartComponent(props) {
       const seconds = date.getSeconds();
       newData.push({
         name: `${minutes}:${seconds}`,
-        DustLevel: props.data.value,
+        GasLevel: props.data.value,
       });
       if (newData.length === 5) {
         newData.shift();
@@ -34,7 +34,7 @@ function DustChartComponent(props) {
           <YAxis/>
           <Tooltip/>
           <CartesianGrid strokeDasharray="3 3" />
-          <Area type="monotone" dataKey="DustLevel" stackId="1" stroke="#82ca9d" fill="#ece03d">
+          <Area type="monotone" dataKey="GasLevel" stackId="1" stroke="#82ca9d" fill="#ece03d">
           </Area>
         </AreaChart>
       </ResponsiveContainer>
@@ -43,4 +43,4 @@ function DustChartComponent(props) {
   );
 };
 
-export default DustChartComponent;
+export default GasChart;
