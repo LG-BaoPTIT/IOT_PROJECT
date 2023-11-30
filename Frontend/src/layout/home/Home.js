@@ -133,7 +133,7 @@ function Home() {
                 .then((res) => console.log(res))
                 .catch((e) => console.log(e));
         } else {
-            status = door ? "OFF" : "ON";
+            status = door ? "Closed" : "Opened";
             setDoor((prev) => !prev);
 
             axios
@@ -166,7 +166,7 @@ function Home() {
             </div>
             <div className={cx("container_app-header")}>
                 <div className={cx("row")}>
-                    <div className={cx("col-3")}>
+                    <div className={cx("col-4")}>
                         <Temperature
                             temp={
                                 dataSensor
@@ -175,14 +175,14 @@ function Home() {
                             }
                         />
                     </div>
-                    <div className={cx("col-3")}>
+                    <div className={cx("col-4")}>
                         <Humidity
                             humidity={
                                 dataSensor ? dataSensor.humidity.toFixed(1) : ""
                             }
                         />
                     </div>
-                    <div className={cx("col-3")}>
+                    <div className={cx("col-4")}>
                         <DustLevel
                             gas={gas}
                         />
