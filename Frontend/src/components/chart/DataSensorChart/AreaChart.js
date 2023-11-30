@@ -31,35 +31,36 @@ function AreaChartComponent(props) {
   }, [props.data]);
 
   return (
-    <div className={cx('container_chart')}>
-      <ResponsiveContainer width="100%" height={360}>
-        <AreaChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis domain={['auto', 'auto']} /> {/* Set domain prop to automatically calculate Y-axis range */}
-          <Tooltip />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Area type="monotone" dataKey="Temp" stackId="1" stroke="#8884d8" fill="#8884d8" />
-          {/* <Area type="monotone" dataKey="Humidity" stackId="1" stroke="#82ca9d" fill="#82ca9d" /> */}
-        </AreaChart>
-      </ResponsiveContainer>
-      <h6>Biểu đồ  nhiệt độ </h6>
-      <div className={cx('container_chart')}>
-      <ResponsiveContainer width="100%" height={360}>
-        <AreaChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis domain={['auto', 'auto']} /> {/* Set domain prop to automatically calculate Y-axis range */}
-          <Tooltip />
-          <CartesianGrid strokeDasharray="3 3" />
-          {/* <Area type="monotone" dataKey="Temp" stackId="1" stroke="#8884d8" fill="#8884d8" /> */}
-          <Area type="monotone" dataKey="Humidity" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
-        </AreaChart>
-      </ResponsiveContainer>
-      <h6>Biểu đồ  độ ẩm</h6>
+    <div className='row'>
+      <div className={cx('container_chart col-6')}>
+        <ResponsiveContainer width="100%" height={360}>
+          <AreaChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis domain={['auto', 'auto']} /> {/* Set domain prop to automatically calculate Y-axis range */}
+            <Tooltip />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Area type="monotone" dataKey="Temp" stackId="1" stroke="#8884d8" fill="#8884d8" />
+            {/* <Area type="monotone" dataKey="Humidity" stackId="1" stroke="#82ca9d" fill="#82ca9d" /> */}
+          </AreaChart>
+        </ResponsiveContainer>
+        <h6>Biểu đồ  nhiệt độ </h6>
+      </div>
+      <div className={cx('container_chart col-6')}>
+        <ResponsiveContainer width="100%" height={360}>
+          <AreaChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis domain={['auto', 'auto']} /> {/* Set domain prop to automatically calculate Y-axis range */}
+            <Tooltip />
+            <CartesianGrid strokeDasharray="3 3" />
+            {/* <Area type="monotone" dataKey="Temp" stackId="1" stroke="#8884d8" fill="#8884d8" /> */}
+            <Area type="monotone" dataKey="Humidity" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
+          </AreaChart>
+        </ResponsiveContainer>
+        <h6>Biểu đồ  độ ẩm</h6>
+      </div>
     </div>
-    </div>
-
   );
 }
 

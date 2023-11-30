@@ -327,14 +327,8 @@ function Home() {
                         </div>
                     </div>
                 </div>
-                <div className={cx("row")}>
-                    <div className={cx("col-6")}>
-                        <AreaChart data={dataSensor ? dataSensor : ""} />
-                    </div>
-                    <div className={cx('col-6')}>
-                        <GasChart data = {gas}/>
-                    </div>
-                </div>
+                <AreaChart data={dataSensor ? dataSensor : ""} />
+                <GasChart data = {gas}/>
             </div>
         </div>
     );
