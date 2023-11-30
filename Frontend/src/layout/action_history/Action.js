@@ -16,11 +16,13 @@ function History() {
     const location = useLocation();
     const props = location.state;
     const [data, setData] = useState([]);
-    const [check, setCheck] = useState(false);
+    const [filterPage, setFilterPage] = useState([])
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [type, setType] = useState('dht');
     const [keyword, setKeyword] = useState('');
+    const [curPage, setCurPage] = useState(0)
+    const [pageSize, setPageSize] = useState(0)
 
     const propsData = {
         startDate,
@@ -33,14 +35,42 @@ function History() {
         setKeyword,
     };
 
-    useEffect(() => {
+    
+    const onSearch = async () => {
+        startDate.setHours(0)
+        startDate.setMinutes(0)
+        startDate.setSeconds(0)
+
+        const eDate = new Date()
+        eDate.setFullYear(endDate.getFullYear())
+        eDate.setMonth(endDate.getMonth())
+        eDate.setDate(endDate.getDate()+1)
+        eDate.setHours(23)
+        eDate.setMinutes(59)
+        eDate.setSeconds(59)
         axios.post('http://localhost:8080/SearchLog', {
             type,
             start: startDate,
-            end: endDate,
+            end: eDate,
             keyWord: keyword
-        }).then((res) => setData(res))
-    }, [type, startDate, endDate, keyword]);
+        }).then((res) => setData(res.data.sort((a, b) => {
+            return new Date(b.timestamp) - new Date(a.timestamp)
+        })))
+    }
+
+    useEffect(() => {
+        setData([])
+        setCurPage(0)
+        setPageSize(0)
+    }, [type])
+
+    useEffect(() => {
+        setPageSize(Math.min(Math.ceil((data?.length || 0)/50), 25))
+    }, [data])
+
+    useEffect(() => {
+        setFilterPage(data.slice(curPage*50, Math.min((curPage+1)*50, data.length)))
+    }, [curPage, data])
 
     const renderTippy = (prop) => {
         return (
@@ -71,30 +101,90 @@ function History() {
                         </div>
 
                         <div className={cx("card-body")}>
-                            <SelectBox {...propsData} />
-
+                            <SelectBox {...propsData} onSearch={onSearch}/>
                             {data.length > 0 ? (
-                               <table className={cx("table")}>
-                               <thead>
-                                   <tr>
-                                       <th>Type</th>
-                                       <th>Home</th>
-                                       <th>Date</th>
-                                       {/* Add more table headers based on your data structure */}
-                                   </tr>
-                               </thead>
-                               <tbody>
-                                   {data.map((item, index) => (
-                                       <tr key={index}>
-                                           <td>{item.type}</td>
-                                           <td>{item.homeId}</td>
-
-                                           <td>{item.start}</td>
-                                           {/* Add more table data based on your data structure */}
-                                       </tr>
-                                   ))}
-                               </tbody>
-                           </table>
+                                <>
+                                    <table className={cx("table")}>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        {type !== 'gas' && <th>Name</th>}
+                                        <th>Date</th>
+                                        {type === 'dht' && <>
+                                            <th>Humidity</th>
+                                            <th>Temperature</th>
+                                        </>}
+                                        {type === 'gas' && <th>Gas</th>}
+                                        {type === 'door' &&<>
+                                            <th>Status</th>
+                                            <th>User name</th>
+                                        </>}
+                                        {/* Add more table headers based on your data structure */}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filterPage.map((item, index) => (
+                                        <tr key={index} style={{color: item?.gasStatus === '1' ? 'red' : '#fff'}}>
+                                            <td>{item.dhtId || item.gas_sensor_id || item.doorId}</td>
+                                            {type !== 'gas' && <td>{item.description}</td>}
+                                            <td>{item.timestamp?.slice(0, 10)}</td>
+                                            {type === 'dht' && <>
+                                                <td>{item.humidity?.toFixed(1)}</td>
+                                                <td>{item.temperature?.toFixed(1)}</td>
+                                            </>}
+                                            {type === 'gas' && <td>{item.value?.toFixed(1)}</td>}
+                                            {type === 'door' && <>
+                                                <td>{item.status}</td>
+                                                <td>{item.name}</td>
+                                            </>}
+                                            {/* Add more table data based on your data structure */}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                                    </table>
+                                    <nav aria-label="Page navigation example">
+                                        <ul className="pagination">
+                                            <li
+                                                className="page-item">
+                                                    <button className="page-link"
+                                                        disabled={curPage===0}
+                                                        style={{backgroundColor: 'transparent', color: '#fff'}} 
+                                                        onClick={e => setCurPage(curPage-1)}
+                                                    >
+                                                        Prev
+                                                    </button>
+                                            </li>
+                                            {
+                                                Array.from({ 
+                                                    length: pageSize
+                                                }, (_, index) => index)
+                                                    .map(v => 
+                                                        <li
+                                                            key={v} 
+                                                            className="page-item">
+                                                                <button className="page-link"
+                                                                    style={{color: curPage === v ? '#000' : '#fff', backgroundColor: 'transparent'}}
+                                                                    onClick={e => setCurPage(v)}
+                                                                >
+                                                                    {v+1}
+                                                                </button>
+                                                        </li>
+                                                    )
+                                            }
+                                            <li
+                                                className="page-item">
+                                                    <button 
+                                                        className="page-link"
+                                                        disabled={curPage === pageSize-1}
+                                                        style={{backgroundColor: 'transparent', color: '#fff'}} 
+                                                        onClick={e => setCurPage(curPage+1)}
+                                                    >
+                                                        Next
+                                                    </button>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </>
                             ) : (
                                 <div className={cx("data-not-found")}>
                                     <span>

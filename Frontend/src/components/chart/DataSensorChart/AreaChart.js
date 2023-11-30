@@ -14,10 +14,11 @@ function AreaChartComponent(props) {
       const newData = [...data];
       const date = new Date(dataSensor.timestamp);
 
+      const hour = date.getHours();
       const minutes = date.getMinutes();
       const seconds = date.getSeconds();
       newData.push({
-        name: `${minutes}:${seconds}`,
+        name: `${hour}:${minutes}:${seconds}`,
         Temp: dataSensor.temperature,
         Humidity: dataSensor.humidity,
       });
@@ -31,8 +32,8 @@ function AreaChartComponent(props) {
   }, [props.data]);
 
   return (
-    <div className='row'>
-      <div className={cx('container_chart col-6')}>
+    <div>
+      <div className={cx('container_chart')}>
         <ResponsiveContainer width="100%" height={360}>
           <AreaChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -46,7 +47,7 @@ function AreaChartComponent(props) {
         </ResponsiveContainer>
         <h6>Biểu đồ  nhiệt độ </h6>
       </div>
-      <div className={cx('container_chart col-6')}>
+      <div className={cx('container_chart')} style={{margin: '5px 0'}}>
         <ResponsiveContainer width="100%" height={360}>
           <AreaChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />

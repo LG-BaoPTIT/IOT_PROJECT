@@ -38,7 +38,7 @@ function GasChart(props) {
           </Area>
         </AreaChart>
       </ResponsiveContainer>
-      <h6>Biểu đồ khí ga.</h6>
+      <h6>Biểu đồ khí ga</h6>
     </div>
   );
 };

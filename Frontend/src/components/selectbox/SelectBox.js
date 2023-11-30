@@ -4,7 +4,6 @@ import styles from "./SelectBox.module.scss";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { CiSearch } from "react-icons/ci";
-import { useState, useEffect } from "react";
 
 const cx = classNames.bind(styles);
 
@@ -17,24 +16,8 @@ function SelectBox({
     setEndDate,
     setType,
     setKeyword,
+    onSearch,
 }) {
-    const [startDate_, setStartDate_] = useState(new Date());
-    const [endDate_, setEndDate_] = useState(new Date());
-    const [type_, setType_] = useState('dht');
-    const [keyword_, setKeyword_] = useState('');
-    const handleSearch = () => {
-        console.log("Search clicked");
-        setStartDate(startDate_)
-        setEndDate(endDate_)
-        setType(type_)
-        setKeyword(keyword_)
-    };
-
-    const handleTypeChange = (e) => {
-        console.log("Search clicked");
-        setType_(e.target.value);
-    };
-
     return (
         <div className={cx("container_select-box")}>
             <div className={cx("item-1")}>
@@ -44,8 +27,8 @@ function SelectBox({
             <div className={cx("item-2")}>
                 <select
                     className={cx("item-2")}
-                    value={type_}
-                    onChange={handleTypeChange}
+                    value={type}
+                    onChange={e => setType(e.target.value)}
                     name="select-type"
                     id="type"
                 >
@@ -56,31 +39,31 @@ function SelectBox({
                 <div className={cx("item-2")}>
                     <DatePicker
                         selectsStart
-                        selected={startDate_}
-                        onChange={(date) => setStartDate_(date)}
-                        startDate={startDate_}
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        startDate={startDate}
                     />
                 </div>
                 <div className={cx("item-2")}>
                     <DatePicker
                         selectsEnd
-                        selected={endDate_}
-                        onChange={(date) => setEndDate_(date)}
-                        endDate={endDate_}
-                        startDate={startDate_}
-                        minDate={startDate_}
+                        selected={endDate}
+                        onChange={(date) => setEndDate(date)}
+                        endDate={endDate}
+                        startDate={startDate}
+                        minDate={startDate}
                     />
                 </div>
 
                 <div className={cx("item-2")}>
                     <input
                         type="text"
-                        onChange={(e) => setKeyword_(e.target.value)}
-                        value={keyword_}
+                        onChange={(e) => setKeyword(e.target.value)}
+                        value={keyword}
                     />
                 </div>
 
-                <div className={cx("filter-all")} onClick={handleSearch}>
+                <div className={cx("filter-all")} onClick={onSearch}>
                     <CiSearch className={cx("icon")} />
                 </div>
             </div>
