@@ -1,12 +1,12 @@
 .ctn {
-    background-color: #1e1e2e;
+    background-color: rgb(193, 207, 234);
     top: 0;
     width: 100%;
     min-height: 100vh;
     .content {
         padding: 40px 0;
         .card {
-            background-color: #27293d;
+            background-color: rgb(170, 170, 170);
             border-radius: 8px;
             padding: 16px;
             &-header {
@@ -25,7 +25,6 @@
                     .icon {
                         font-size: 32px;
                         border-radius: 8px;
-                        background-image: linear-gradient(to bottom left,#e14eca,#ba54f5,#e14eca);
                     }
                     :hover {
                         cursor: pointer;
@@ -65,7 +64,7 @@
                     vertical-align: middle;
                     font-weight: 600;
                     border: 0;
-                    color: hsla(0,0%,100%,.7);
+                    // color: hsla(0,0%,100%,.7);
                     vertical-align: bottom;
                     text-transform: uppercase;
                     font-size: 14px;

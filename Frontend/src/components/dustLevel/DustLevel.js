@@ -1,5 +1,7 @@
 import classNames from "classnames/bind";
 import styles from "./DustLevel.module.scss";
+import { FaGripfire } from "react-icons/fa";
+
 
 import {GiDustCloud} from "react-icons/gi";
 
@@ -14,7 +16,7 @@ function DustLevel({gas}) {
             </div>
             <div className={cx('img-des')}>
                 <p className={cx('dustlevel')}>{dustLevel}</p>
-                <GiDustCloud className={cx('icon')}/>
+                <FaGripfire className={cx('icon')}/>
             </div>
         </div>
     );

@@ -9,7 +9,6 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 import Temperature from "../../components/temperature/Temperature";
 import Humidity from "../../components/humidity/Humidity";
-import Brightness from "../../components/brightness/Brightness";
 import DustLevel from "../../components/dustLevel/DustLevel";
 import AreaChart from "../../components/chart/DataSensorChart/AreaChart";
 import GasChart from "../../components/chart/DustLevelChart/DustChart";
@@ -18,11 +17,10 @@ import Nav from "../../components/navbar/Nav";
 
 import ImgLight from "../../img/idea.png";
 import LightOf from "../../img/big-light.png";
-import FanOff from "../../img/fan.png";
-import FanOn from "../../img/fan (1).png";
+import DoorClose from '../../img/doorclose.png'
+import DoorOpen from '../../img/dooropen.png'
 import { HiBars3 } from "react-icons/hi2";
 import { StompSessionProvider, useSubscription } from "react-stomp-hooks";
-const client = new W3CWebSocket("ws://localhost:8000");
 const cx = classNames.bind(styles);
 
 export default function DashBoard() {
@@ -298,7 +296,7 @@ function Home() {
                             {door ? (
                                 <div className={cx("item")}>
                                     <img
-                                        src={FanOn}
+                                        src={DoorOpen}
                                         alt="Fan On"
                                         className={cx("fan-on")}
                                     />
@@ -312,7 +310,7 @@ function Home() {
                             ) : (
                                 <div className={cx("item")}>
                                     <img
-                                        src={FanOff}
+                                        src={DoorClose}
                                         alt="Fan Off"
                                         className={cx("fan-off")}
                                     />

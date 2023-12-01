@@ -24,7 +24,7 @@ function SelectBox({
                 <span>Year:</span>
                 <h3>2023</h3>
             </div>
-            <div className={cx("item-2")}>
+            <div className={cx("filterRow")}>
                 <select
                     className={cx("item-2")}
                     value={type}
@@ -36,15 +36,16 @@ function SelectBox({
                     <option value="dht">Dht</option>
                     <option value="gas">Gas</option>
                 </select>
-                <div className={cx("item-2")}>
+                <div >
                     <DatePicker
                         selectsStart
                         selected={startDate}
                         onChange={(date) => setStartDate(date)}
                         startDate={startDate}
+                        className={cx("item-2")}
                     />
                 </div>
-                <div className={cx("item-2")}>
+                <div >
                     <DatePicker
                         selectsEnd
                         selected={endDate}
@@ -52,18 +53,20 @@ function SelectBox({
                         endDate={endDate}
                         startDate={startDate}
                         minDate={startDate}
+                        className={cx("item-2")}
                     />
                 </div>
 
-                <div className={cx("item-2")}>
+                <div >
                     <input
                         type="text"
                         onChange={(e) => setKeyword(e.target.value)}
                         value={keyword}
+                        className={cx("item-2")}
                     />
                 </div>
 
-                <div className={cx("filter-all")} onClick={onSearch}>
+                <div  onClick={onSearch}>
                     <CiSearch className={cx("icon")} />
                 </div>
             </div>
