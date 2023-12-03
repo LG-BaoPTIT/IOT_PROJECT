@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ public class LightController {
     private SimpMessagingTemplate messagingTemplate;
 
     @PostMapping("/changeLightStatus")
-   // @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> changeLightStatus(@RequestBody LightDTO lightDTO)  {
         if(lightDTO==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");

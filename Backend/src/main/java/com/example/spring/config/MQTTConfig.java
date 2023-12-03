@@ -152,8 +152,9 @@ public class MQTTConfig {
                         gasSensorDTO.setTimestamp(new Date());
                         gasSensorDTO.setTimestamp(new Date());
                         GasSensorLog gasSensorLog = modelMapper.map(gasSensorDTO,GasSensorLog.class);
+                        gasSensorService.save(gasSensorLog);
                         if(gasSensorLog.getGasStatus().equals("1")){
-                            gasSensorService.save(gasSensorLog);
+
                             List<String> listEmail = userService.getEmailByHomeId(gasSensorDTO.getHome_id());
                             for(String e : listEmail){
                                 emailService.sendFireAlertEmail(e);
