@@ -1,11 +1,11 @@
 import classNames from "classnames/bind";
-import styles from "./Nav.module.scss";
 import { Link } from "react-router-dom";
+import styles from "./Nav.module.scss";
 
-import {CgProfile} from "react-icons/cg";
-import {GrHistory} from "react-icons/gr";
-import {MdOutlineSensors} from "react-icons/md";
-import {AiTwotoneHome} from "react-icons/ai";
+import { AiTwotoneHome } from "react-icons/ai";
+import { GrHistory } from "react-icons/gr";
+import { RiLogoutBoxLine } from "react-icons/ri";
+
 
 const cx = classNames.bind(styles);
 
@@ -32,29 +32,23 @@ function Nav({props}) {
                     </div>
                 </Link>
 
-                <Link to = "/profile" state={props}>
-                    <div className={cx('nav-item')}>
-                        <div>
-                            <CgProfile className={cx('icon')}/>
-                            Profile
-                        </div>
-                    </div>
-                </Link>
-
-                <Link to = "/data-sensor" state={props}>
-                    <div className={cx('nav-item')}>
-                        <div>
-                            <MdOutlineSensors className={cx('icon')}/>
-                            Data Sensors
-                        </div>
-                    </div>
-                </Link>
-
                 <Link to = "/action-history" state={props}>
                     <div className={cx('nav-item')}>
                         <div>
                             <GrHistory className={cx('icon')}/>
-                            Action History
+                            History
+                        </div>
+                    </div>
+                </Link>
+
+                <Link to = "/login" reloadDocument state={props} onClick={() => {
+                        localStorage.removeItem('token')
+                        localStorage.removeItem('home_id')
+                    }}>
+                    <div className={cx('nav-item')} >
+                        <div>
+                            <RiLogoutBoxLine className={cx('icon')}/>
+                            Log out
                         </div>
                     </div>
                 </Link>
