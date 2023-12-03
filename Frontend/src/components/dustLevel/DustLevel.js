@@ -5,11 +5,12 @@ import {GiDustCloud} from "react-icons/gi";
 
 const cx = classNames.bind(styles);
 
-function DustLevel({dustLevel}) {
+function DustLevel({gas}) {
+    const dustLevel = gas?.value.toFixed(1)
     return (
-        <div className={cx('container')}>
+        <div className={gas?.gasStatus === 0 ? cx('container'): cx('containerRed')}>
             <div className={cx('description')}>
-                <p className={cx('title')}>Độ bụi (mg/m^3)</p>
+                <p className={cx('title')}>Khí gas</p>
             </div>
             <div className={cx('img-des')}>
                 <p className={cx('dustlevel')}>{dustLevel}</p>
