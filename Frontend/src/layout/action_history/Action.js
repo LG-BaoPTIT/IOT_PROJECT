@@ -35,7 +35,7 @@ function History() {
         setKeyword,
     };
 
-    
+
     const onSearch = async () => {
         startDate.setHours(0)
         startDate.setMinutes(0)
@@ -44,7 +44,7 @@ function History() {
         const eDate = new Date()
         eDate.setFullYear(endDate.getFullYear())
         eDate.setMonth(endDate.getMonth())
-        eDate.setDate(endDate.getDate()+1)
+        eDate.setDate(endDate.getDate() + 1)
         eDate.setHours(23)
         eDate.setMinutes(59)
         eDate.setSeconds(59)
@@ -65,11 +65,11 @@ function History() {
     }, [type])
 
     useEffect(() => {
-        setPageSize(Math.min(Math.ceil((data?.length || 0)/50), 25))
+        setPageSize(Math.min(Math.ceil((data?.length || 0) / 50), 25))
     }, [data])
 
     useEffect(() => {
-        setFilterPage(data.slice(curPage*50, Math.min((curPage+1)*50, data.length)))
+        setFilterPage(data.slice(curPage * 50, Math.min((curPage + 1) * 50, data.length)))
     }, [curPage, data])
 
     const renderTippy = (prop) => {
@@ -86,7 +86,7 @@ function History() {
                 <div className={cx("content")}>
                     <div className={cx("card")}>
                         <div className={cx("card-header")}>
-                            <h4>Action History</h4>
+                            <h4>Lịch sử</h4>
                             <Tippy
                                 render={renderTippy}
                                 interactive
@@ -101,86 +101,96 @@ function History() {
                         </div>
 
                         <div className={cx("card-body")}>
-                            <SelectBox {...propsData} onSearch={onSearch}/>
+                            <SelectBox {...propsData} onSearch={onSearch} />
                             {data.length > 0 ? (
                                 <>
                                     <table className={cx("table")}>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        {type !== 'gas' && <th>Name</th>}
-                                        <th>Date</th>
-                                        {type === 'dht' && <>
-                                            <th>Humidity</th>
-                                            <th>Temperature</th>
-                                        </>}
-                                        {type === 'gas' && <th>Gas</th>}
-                                        {type === 'door' &&<>
-                                            <th>Status</th>
-                                            <th>User name</th>
-                                        </>}
-                                        {/* Add more table headers based on your data structure */}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filterPage.map((item, index) => (
-                                        <tr key={index} style={{color: item?.gasStatus === '1' ? 'red' : '#fff'}}>
-                                            <td>{item.dhtId || item.gas_sensor_id || item.doorId}</td>
-                                            {type !== 'gas' && <td>{item.description}</td>}
-                                            <td>{item.timestamp?.slice(0, 10)}</td>
-                                            {type === 'dht' && <>
-                                                <td>{item.humidity?.toFixed(1)}</td>
-                                                <td>{item.temperature?.toFixed(1)}</td>
-                                            </>}
-                                            {type === 'gas' && <td>{item.value?.toFixed(1)}</td>}
-                                            {type === 'door' && <>
-                                                <td>{item.status}</td>
-                                                <td>{item.name}</td>
-                                            </>}
-                                            {/* Add more table data based on your data structure */}
-                                        </tr>
-                                    ))}
-                                </tbody>
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                {type !== 'gas' && <th>Name</th>}
+                                                <th>Date</th>
+                                                {type === 'dht' && <>
+                                                    <th>Humidity</th>
+                                                    <th>Temperature</th>
+                                                </>}
+                                                {type === 'gas' && <th>Gas</th>}
+                                                {type === 'door' && <>
+                                                    <th>Status</th>
+                                                    <th>User name</th>
+                                                </>}
+                                                {/* Add more table headers based on your data structure */}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {filterPage.map((item, index) => {
+                                                const timestampDate = new Date(item.timestamp);
+                                                const formattedTimestamp = `${timestampDate.getFullYear()}-${(timestampDate.getMonth() + 1).toString().padStart(2, '0')}-${timestampDate.getDate().toString().padStart(2, '0')} ${timestampDate.getHours().toString().padStart(2, '0')}:${timestampDate.getMinutes().toString().padStart(2, '0')}:${timestampDate.getSeconds().toString().padStart(2, '0')}`;
+
+                                                return (
+                                                    <tr key={index} style={{ color: item?.value > 0 ? 'red' : '#fff' }}>
+                                                        <td>{item.dhtId || item.gas_sensor_id || item.doorId}</td>
+                                                        {type !== 'gas' && <td>{item.description}</td>}
+                                                        <td>{formattedTimestamp}</td>
+                                                        {type === 'dht' && (
+                                                            <>
+                                                                <td>{item.humidity?.toFixed(1)}</td>
+                                                                <td>{item.temperature?.toFixed(1)}</td>
+                                                            </>
+                                                        )}
+                                                        {type === 'gas' && <td>{item.value?.toFixed(1)}</td>}
+                                                        {type === 'door' && (
+                                                            <>
+                                                                <td>{item.status}</td>
+                                                                <td>{item.name}</td>
+                                                            </>
+                                                        )}
+                                                        {/* Add more table data based on your data structure */}
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+
                                     </table>
                                     <nav aria-label="Page navigation example">
                                         <ul className="pagination">
                                             <li
                                                 className="page-item">
-                                                    <button className="page-link"
-                                                        disabled={curPage===0}
-                                                        style={{backgroundColor: 'transparent', color: '#fff'}} 
-                                                        onClick={e => setCurPage(curPage-1)}
-                                                    >
-                                                        Prev
-                                                    </button>
+                                                <button className="page-link"
+                                                    disabled={curPage === 0}
+                                                    style={{ backgroundColor: 'transparent', color: '#fff' }}
+                                                    onClick={e => setCurPage(curPage - 1)}
+                                                >
+                                                    Prev
+                                                </button>
                                             </li>
                                             {
-                                                Array.from({ 
+                                                Array.from({
                                                     length: pageSize
                                                 }, (_, index) => index)
-                                                    .map(v => 
+                                                    .map(v =>
                                                         <li
-                                                            key={v} 
+                                                            key={v}
                                                             className="page-item">
-                                                                <button className="page-link"
-                                                                    style={{color: curPage === v ? '#000' : '#fff', backgroundColor: 'transparent'}}
-                                                                    onClick={e => setCurPage(v)}
-                                                                >
-                                                                    {v+1}
-                                                                </button>
+                                                            <button className="page-link"
+                                                                style={{ color: curPage === v ? '#000' : '#fff', backgroundColor: 'transparent' }}
+                                                                onClick={e => setCurPage(v)}
+                                                            >
+                                                                {v + 1}
+                                                            </button>
                                                         </li>
                                                     )
                                             }
                                             <li
                                                 className="page-item">
-                                                    <button 
-                                                        className="page-link"
-                                                        disabled={curPage === pageSize-1}
-                                                        style={{backgroundColor: 'transparent', color: '#fff'}} 
-                                                        onClick={e => setCurPage(curPage+1)}
-                                                    >
-                                                        Next
-                                                    </button>
+                                                <button
+                                                    className="page-link"
+                                                    disabled={curPage === pageSize - 1}
+                                                    style={{ backgroundColor: 'transparent', color: '#fff' }}
+                                                    onClick={e => setCurPage(curPage + 1)}
+                                                >
+                                                    Next
+                                                </button>
                                             </li>
                                         </ul>
                                     </nav>

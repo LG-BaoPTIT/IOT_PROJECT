@@ -153,14 +153,16 @@ public class MQTTConfig {
                         gasSensorDTO.setTimestamp(new Date());
                         GasSensorLog gasSensorLog = modelMapper.map(gasSensorDTO,GasSensorLog.class);
                         gasSensorService.save(gasSensorLog);
-                        if(gasSensorLog.getGasStatus().equals("1")){
-
+                        if (gasSensorLog.getGasStatus().equals("1")) {
                             List<String> listEmail = userService.getEmailByHomeId(gasSensorDTO.getHome_id());
-                            for(String e : listEmail){
-                                emailService.sendFireAlertEmail(e);
+                            for (String e : listEmail) {
+                                if (e != null) {
+                                    // Gửi email bất đồng bộ
+                                    new Thread(() -> emailService.sendFireAlertEmail(e)).start();
+                                }
                             }
-
                         }
+
                         String sensorTopic = "/topic/gas_data/" + gasSensorDTO.getHome_id() + "/" + gasSensorDTO.getGas_sensor_id();
                         messagingTemplate.convertAndSend(sensorTopic, gasSensorDTO);
                     } catch (JsonProcessingException e) {

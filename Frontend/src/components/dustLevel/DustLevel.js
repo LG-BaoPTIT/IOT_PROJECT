@@ -10,12 +10,12 @@ const cx = classNames.bind(styles);
 function DustLevel({gas}) {
     const dustLevel = gas?.value.toFixed(1)
     return (
-        <div className={gas?.gasStatus === '1' ? cx('containerRed'): cx('container')}>
+        <div className={dustLevel > 0 ? cx('containerRed'): cx('container')}>
             <div className={cx('description')}>
                 <p className={cx('title')}>Khí gas</p>
             </div>
             <div className={cx('img-des')}>
-                <p className={cx('dustlevel')}>{dustLevel}</p>
+                <p className={cx('dustlevel')}>{dustLevel}  ppm</p>
                 <FaGripfire className={cx('icon')}/>
             </div>
         </div>

@@ -38,7 +38,7 @@ function AreaChartComponent(props) {
           <AreaChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis domain={['auto', 'auto']} /> {/* Set domain prop to automatically calculate Y-axis range */}
+            <YAxis domain={['auto', 'auto']} label={{ value: '°C', position: 'insideLeft' }}/>
             <Tooltip />
             <CartesianGrid strokeDasharray="3 3" />
             <Area type="monotone" dataKey="Temp" stackId="1" stroke="#8884d8" fill="#8884d8" />
@@ -52,7 +52,9 @@ function AreaChartComponent(props) {
           <AreaChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis domain={['auto', 'auto']} /> {/* Set domain prop to automatically calculate Y-axis range */}
+
+            <YAxis domain={['auto', 'auto']} label={{ value: '%',  position: 'insideLeft' }}/>
+
             <Tooltip />
             <CartesianGrid strokeDasharray="3 3" />
             {/* <Area type="monotone" dataKey="Temp" stackId="1" stroke="#8884d8" fill="#8884d8" /> */}

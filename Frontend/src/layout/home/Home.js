@@ -204,6 +204,8 @@ function Home() {
                                     >
                                         OFF
                                     </button>
+                                    <p className={cx('title')}>Phòng bếp</p>
+
                                 </div>
                             ) : (
                                 <div className={cx("item")}>
@@ -218,6 +220,7 @@ function Home() {
                                     >
                                         ON
                                     </button>
+                                    <p className={cx('title')}>Phòng bếp</p>
                                 </div>
                             )}
                         </div>
@@ -237,6 +240,7 @@ function Home() {
                                     >
                                         OFF
                                     </button>
+                                    <p className={cx('title')}>Phòng khách</p>
                                 </div>
                             ) : (
                                 <div className={cx("item")}>
@@ -251,6 +255,8 @@ function Home() {
                                     >
                                         ON
                                     </button>
+                                    <p className={cx('title')}>Phòng khách</p>
+
                                 </div>
                             )}
                         </div>
@@ -270,6 +276,7 @@ function Home() {
                                     >
                                         OFF
                                     </button>
+                                    <p className={cx('title')}>Phòng ngủ</p>
                                 </div>
                             ) : (
                                 <div className={cx("item")}>
@@ -284,6 +291,8 @@ function Home() {
                                     >
                                         ON
                                     </button>
+                                    <p className={cx('title')}>Phòng ngủ</p>
+
                                 </div>
                             )}
                         </div>
@@ -306,6 +315,7 @@ function Home() {
                                     >
                                         CLOSE
                                     </button>
+                                    <p className={cx('title')}>Cửa chính</p>
                                 </div>
                             ) : (
                                 <div className={cx("item")}>
@@ -320,6 +330,8 @@ function Home() {
                                     >
                                         OPEN
                                     </button>
+                                    <p className={cx('title')}>Cửa chính</p>
+
                                 </div>
                             )}
                         </div>

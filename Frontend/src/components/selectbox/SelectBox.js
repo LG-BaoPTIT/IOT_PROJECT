@@ -21,8 +21,7 @@ function SelectBox({
     return (
         <div className={cx("container_select-box")}>
             <div className={cx("item-1")}>
-                <span>Year:</span>
-                <h3>2023</h3>
+                
             </div>
             <div className={cx("filterRow")}>
                 <select
@@ -63,11 +62,14 @@ function SelectBox({
                         onChange={(e) => setKeyword(e.target.value)}
                         value={keyword}
                         className={cx("item-2")}
+                        placeholder="Từ khóa"
                     />
                 </div>
 
                 <div  onClick={onSearch}>
-                    <CiSearch className={cx("icon")} />
+                    <CiSearch className={cx("icon")} style={{
+                        cursor: 'pointer'
+                    }}/>
                 </div>
             </div>
         </div>

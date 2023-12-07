@@ -36,13 +36,16 @@ public class SecurityConfig {
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/auth/**").permitAll()
 //						.requestMatchers("/api/v1/test/**").permitAll()
 //						.requestMatchers("/changeLightStatus").permitAll()
-//						.requestMatchers("/**").permitAll()
+						.requestMatchers("/**").permitAll()
+						.requestMatchers("/logout").permitAll()
+						.requestMatchers("/login").permitAll()
 						.anyRequest().authenticated())
+
 				.logout(logout -> logout
 						.logoutUrl("/logout") // Đường dẫn đăng xuất
-						.logoutSuccessUrl("/login") // Đường dẫn sau khi đăng xuất thành công
 						.invalidateHttpSession(true) // Hủy phiên làm việc của người dùng sau khi đăng xuất
 						.deleteCookies("JSESSIONID", "cookie2", "cookie3") // Xóa các cookie bằng cách chỉ định tên của chúng
+						.logoutSuccessUrl("/login") // Đường dẫn sau khi đăng xuất thành công
 						.permitAll() // Cho phép tất cả người dùng truy cập đường dẫn đăng xuất
 		);
 
