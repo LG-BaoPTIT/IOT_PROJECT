@@ -31,9 +31,9 @@ function SelectBox({
                     name="select-type"
                     id="type"
                 >
-                    <option value="door">Door</option>
-                    <option value="dht">Dht</option>
-                    <option value="gas">Gas</option>
+                    <option value="door">Cửa</option>
+                    <option value="dht">Cảm biến nhệt độ/độ ẩm</option>
+                    <option value="gas">Cảm biến khí gas</option>
                 </select>
                 <div >
                     <DatePicker

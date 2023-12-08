@@ -51,7 +51,9 @@ public class DoorController {
 
         System.out.println("Người dùng " + userName + " gửi yêu cầu đến URI /changeDoorStatus" );
 
-        String sensorTopic = "/topic/door_data/" + doorDataDTO.getHome_id();
+//        String sensorTopic = "/topic/door_data/" + doorDataDTO.getHome_id();
+//        messagingTemplate.convertAndSend(sensorTopic, doorDataDTO);
+        String sensorTopic = "/topic/door_data/" + doorDataDTO.getHome_id() + "/" + doorDataDTO.getDoor_id();
         messagingTemplate.convertAndSend(sensorTopic, doorDataDTO);
 
         String topic =userService.getHomeIdByUserName(userName)+ "/door_state/" + doorDataDTO.getDoor_id() ;
@@ -61,6 +63,7 @@ public class DoorController {
         ModelMapper modelMapper = new ModelMapper();
         doorDataDTO.setCard_id(userService.getIdCardByUserName(userName));
         doorService.save(modelMapper.map(doorDataDTO, DoorLog.class));
+
         return ResponseEntity.status(HttpStatus.OK).body("open/close door successfully.");
 
     }

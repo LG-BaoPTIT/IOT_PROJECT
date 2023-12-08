@@ -48,7 +48,9 @@ public class LightController {
 
         mqttService.sendMessage(topic,lightDTO.getStatus());
 
-        String sensorTopic = "/topic/light_data/" + lightDTO.getHome_id();
+//        String sensorTopic = "/topic/light_data/" + lightDTO.getHome_id();
+//        messagingTemplate.convertAndSend(sensorTopic, lightDTO);
+        String sensorTopic = "/topic/light_data/" + lightDTO.getHome_id() + "/" + lightDTO.getLight_id() ;
         messagingTemplate.convertAndSend(sensorTopic, lightDTO);
         return ResponseEntity.status(HttpStatus.OK).body("on/off light successfully.");
     }
